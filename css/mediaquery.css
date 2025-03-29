@@ -1,0 +1,38 @@
+@media (max-width: 600px) {
+    .input-group {
+        width: 200px;
+    }
+
+    .form-container {
+        position: relative;
+        left: -15px;
+    }
+
+    .top-bar {
+        display: block;
+    }
+
+    .nav {
+        width: 60px !important; 
+    }
+
+    .user-bar {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .nav .nav-links p {
+        opacity: 0;
+        display: none !important;
+      }
+
+    .blog-img {
+        width: 250px;
+        height: auto;
+    }
+
+    .blog-data-content {
+        flex-wrap: wrap;
+    }
+
+}

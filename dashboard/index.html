@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Dashboard</title>
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/mediaquery.css">
+</head>
+
+<body>
+    <div class="nav">
+        <div class="menu-bar">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+        <a href="/dashboard/index.html" class="nav-links">
+            <i class="fa-solid fa-house-user"></i>
+            <p>Home</p>
+        </a>
+        <hr />
+        <a href="/dashboard/my-blogs.html" class="nav-links">
+            <i class="fa-solid fa-blog"></i>
+            <p>My Blogs</p>
+        </a>
+        <hr />
+        <a href="/dashboard/add-blog.html" class="nav-links">
+            <i class="fa-solid fa-plus"></i>
+            <p>New Blog</p>
+        </a>
+        <hr />
+        <div id="userstab">
+            <a href="/dashboard/users.html" class="nav-links" id="usersTab">
+                <i class="fa-solid fa-users"></i>
+                <p>Users</p>
+            </a>
+            <hr />
+        </div>
+        <a href="../login.html" class="nav-links">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <p>Logout</p>
+        </a>
+    </div>
+    <div id="dashboard">
+        <div class="top-bar">
+            <img src="../images/logos/logo2.png" alt="logo" class="logo" width="150px">
+            <h1 class="user">Welcome,<p id="loggedinuser"></p>
+            </h1>
+        </div>
+        <div class="bottom-bar">
+            <div class="cards">
+                <div class="card">
+                    <h3>Total No. of Blogs</h3>
+                    <p></p>
+                </div>
+                <div class="card">
+                    <h3>Total No. of Pending Blogs</h3>
+                    <p></p>
+                </div>
+                <div class="card">
+                    <h3>Total No. of Completed Blogs</h3>
+                    <p></p>
+                </div>
+                <div class="card" id="userCard">
+                    <h3>Total No. of Registered Users</h3>
+                    <p></p>
+                </div>
+            </div>
+            <div class="activities">
+                    <p>Recent Activities</p>
+                <ul id="activity-list">
+                    <li>Loading activities...</li>
+                </ul>
+            </div>
+            <div class="recent-blogs">
+                <h3>Recently Added Blogs</h3>
+                <div class="recent-table-div">
+                    <table id="recent-blogs-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Created At</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="3">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <script src="../js/dashboard.js"></script>
+    <script src="../js/dashboard-home.js"></script>
+</body>
+
+</html>
