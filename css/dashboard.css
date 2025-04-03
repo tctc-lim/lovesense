@@ -7,6 +7,28 @@ body {
   background-color: #f2f2f2;
 }
 
+.loader {
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 20px;
+  font-weight: 800;
+  position: relative;
+  top: 100px;
+}
+
+.loader2 {
+  position: absolute;
+  top: 50%;
+  right: 40%;
+  color: white;
+  font-size: 20px;
+  font-weight: 800;
+}
+
 .nav-links {
   display: flex;
   align-items: center;
@@ -19,12 +41,12 @@ body {
 }
 
 .nav-links:hover {
-    color: #bcd621;
+  color: #bcd621;
 }
 
 .nav-links.active {
-    color: #662d91;
-    font-weight: bold;
+  color: #662d91;
+  font-weight: bold;
 }
 
 .nav-links p {
@@ -43,7 +65,6 @@ body {
 ::-webkit-scrollbar {
   display: none;
 }
-
 
 .fa-solid {
   margin: 16px 0px;
@@ -97,7 +118,7 @@ body {
   margin: 0px !important;
 }
 
-.user>p {
+.user > p {
   margin: 0px !important;
 }
 
@@ -149,29 +170,29 @@ body {
   gap: 30px;
 }
 
-.user-bar>div {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 20px;
+.user-bar > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
 }
 
-.user-bar>div>button {
-    border: none;
-    padding: 10px 20px;
-    font-size: 13px;
-    font-weight: 800;
-    border-radius: 10px;
-    background-color: #bcd621;
-    border: 2px solid #bcd621;
-    color: white;
+.user-bar > div > button {
+  border: none;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 800;
+  border-radius: 10px;
+  background-color: #bcd621;
+  border: 2px solid #bcd621;
+  color: white;
 }
 
-.user-bar>div>button:hover {
-    background-color: transparent;
-    border-color: #bcd621;
-    color: white;
-    cursor: pointer;
+.user-bar > div > button:hover {
+  background-color: transparent;
+  border-color: #bcd621;
+  color: white;
+  cursor: pointer;
 }
 
 .user-bar p {
@@ -204,7 +225,8 @@ body {
   padding: 6px 0px;
 }
 
-th, td {
+th,
+td {
   white-space: nowrap; /* Prevent text from wrapping */
 }
 
@@ -214,21 +236,21 @@ th, td {
 }
 
 .user-edit-delete {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 }
 
 .fa-edit {
-    color: blue;
-    cursor: pointer;
+  color: blue;
+  cursor: pointer;
 }
 
 .fa-trash {
-    color: red;
-    cursor: pointer;
+  color: red;
+  cursor: pointer;
 }
 
 /* Modal Styles */
@@ -262,62 +284,72 @@ th, td {
   right: 30px;
 }
 
-#modalTitle, #editTitle, .deleteTitle {
-    color: #662d91;
-    text-align: center;
+#modalTitle,
+#editTitle,
+.deleteTitle {
+  color: #662d91;
+  text-align: center;
 }
 
-#addUserForm div, #editUserForm div {
-    margin: 20px 0px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+#addUserForm div,
+#editUserForm div {
+  margin: 20px 0px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
-#addUserForm div input, #editUserForm div input {
-    width: 240px;
-    height: 40px;
-    outline: none;
-    border: 2px solid black;
-    border-radius: 5px;
-    font-size: 16px;
+#addUserForm div input,
+#editUserForm div input {
+  width: 240px;
+  height: 40px;
+  outline: none;
+  border: 2px solid black;
+  border-radius: 5px;
+  font-size: 16px;
 }
 
-#addUserForm div select, #editUserForm div select {
-    width: 250px;
-    height: 45px;
-    outline: none;
-    border: 2px solid black;
-    border-radius: 5px;
-    font-size: 16px;
+#addUserForm div select,
+#editUserForm div select {
+  width: 250px;
+  height: 45px;
+  outline: none;
+  border: 2px solid black;
+  border-radius: 5px;
+  font-size: 16px;
 }
 
-#addUserForm button, #editUserForm button, .confirm-cancel {
-    border: none;
-    background-color: #662d91;
-    border: 2px solid #662d91;
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-size: 14px;
-    color: white;
-    transition: all 0.3s;
+#addUserForm button,
+#editUserForm button,
+.confirm-cancel {
+  border: none;
+  background-color: #662d91;
+  border: 2px solid #662d91;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  color: white;
+  transition: all 0.3s;
 }
 
 .confirm-delete {
-    border: none;
-    background-color: red;
-    border: 2px solid red;
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-size: 14px;
-    color: white;
-    transition: all 0.3s;
-    margin-right: 20px;
+  border: none;
+  background-color: red;
+  border: 2px solid red;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  color: white;
+  transition: all 0.3s;
+  margin-right: 20px;
 }
 
-#addUserForm button:hover, #editUserForm button:hover, .confirm-delete:hover, .confirm-cancel:hover {
-    scale: 1.1;
-    cursor: pointer;
+#addUserForm button:hover,
+#editUserForm button:hover,
+.confirm-delete:hover,
+.confirm-cancel:hover {
+  scale: 1.1;
+  cursor: pointer;
 }
 
 /* Table Styles */
@@ -329,27 +361,29 @@ th, td {
 }
 
 /* BLOGS  */
-#blogForm, #edit-blog-form {
+#blogForm,
+#edit-blog-form {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   color: white;
 }
 
-.image-div, .input-div {
+.image-div,
+.input-div {
   display: flex;
-  margin:  0px 0px 20px 0px;
+  margin: 0px 0px 20px 0px;
   flex-wrap: wrap;
   gap: 20px;
   align-items: center;
 }
 
-#blogtitle, #title {
- flex-grow: 1;
- text-transform: uppercase;
- font-weight: bold;
+#blogtitle,
+#title {
+  flex-grow: 1;
+  text-transform: uppercase;
+  font-weight: bold;
 }
-
 
 .preview-container {
   display: flex;
@@ -362,14 +396,14 @@ th, td {
   margin: 20px 0px;
 }
 
-#content1, #content2 {
+#content1,
+#content2 {
   width: 98%;
   height: 600px !important;
   resize: none;
   outline: none;
   margin-top: 20px !important;
   font-size: 14px;
-
 }
 
 .preview {
@@ -385,12 +419,11 @@ th, td {
   overflow: hidden;
 }
 
-.preview img  {
+.preview img {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
-
 
 input {
   outline: none;
@@ -403,7 +436,9 @@ label {
   display: block;
 }
 
-#blogForm input, #blogForm textarea, #blogForm select {
+#blogForm input,
+#blogForm textarea,
+#blogForm select {
   padding: 8px;
   margin: 5px 0 10px;
   border: 1px solid #ccc;
@@ -411,13 +446,15 @@ label {
   outline: none;
 }
 
-.tox-menubar, .tox-toolbar__group {
+.tox-menubar,
+.tox-toolbar__group {
   flex-wrap: nowrap !important;
   overflow-x: scroll;
   gap: 10px;
 }
 
-.tox-tbtn, .tox-mbtn {
+.tox-tbtn,
+.tox-mbtn {
   width: 80px !important;
 }
 
@@ -456,7 +493,8 @@ select#status {
   display: flex;
   justify-content: center;
 }
-#blogForm button, .blog-button button {
+#blogForm button,
+.blog-button button {
   width: 150px;
   background-color: #bcd621;
   color: white;
@@ -509,8 +547,8 @@ select#status {
   max-width: 560px;
 }
 
-.blog-details>button {
-  margin-right:10px;
+.blog-details > button {
+  margin-right: 10px;
   padding: 10px 10px;
   border-radius: 10px;
   border: 2px solid rgb(71, 69, 69);
@@ -519,7 +557,7 @@ select#status {
   transition: all 0.3s ease;
 }
 
-.blog-details>button:hover {
+.blog-details > button:hover {
   scale: 1.04;
 }
 
@@ -532,13 +570,12 @@ select#status {
   margin: 20px 0px;
 }
 
-
 .activities {
   color: white;
   padding: 0px 30px;
 }
 
-.activities>p {
+.activities > p {
   font-size: 24px;
   font-weight: 700;
   text-transform: uppercase;
@@ -550,7 +587,7 @@ select#status {
   left: -20px;
 }
 
-#activity-list>li {
+#activity-list > li {
   font-size: 18px;
   margin: 16px 0px;
 }
@@ -563,7 +600,7 @@ select#status {
   border-radius: 20px;
 }
 
-.recent-blogs>h3 {
+.recent-blogs > h3 {
   font-size: 24px;
   text-transform: uppercase;
 }
@@ -577,9 +614,10 @@ select#status {
   text-align: left;
 }
 
-#recent-blogs-table tr, #recent-blogs-table th, #recent-blogs-table td {
+#recent-blogs-table tr,
+#recent-blogs-table th,
+#recent-blogs-table td {
   border: 1px solid black;
   padding: 10px;
   white-space: nowrap;
 }
-

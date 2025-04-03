@@ -3,101 +3,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 fetchBlogs(1);
 })
 
-function previewImage(input, previewId) {
-    const file = input.files[0]; // Get the first file
-
-    if (file) {
-        const reader = new FileReader();
-        
-        reader.onload = function (e) {
-            document.getElementById(previewId).innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width: 100%; height: auto;">`;
-        };
-
-        reader.onerror = function (error) {
-            console.error("Error loading file:", error);
-        };
-
-        reader.readAsDataURL(file);
-    } else {
-        document.getElementById(previewId).innerHTML = "No Image";
-    }
-}
-
-// Event listeners for image inputs
-document.getElementById("image1").addEventListener("change", function () {
-    previewImage(this, "preview1");
-});
-
-document.getElementById("image2").addEventListener("change", function () {
-    previewImage(this, "preview2");
-});
-
-document.getElementById("blogForm").addEventListener("submit", async (e) => {
-    e.preventDefault(); // Stop form submission
-
-    // Ensure TinyMCE content is updated in the form data
-    tinymce.triggerSave();
-
-    let formData = new FormData(e.target);
-    const authtoken = localStorage.getItem("token");
-
-    try {
-        let response = await fetch("http://localhost:8000/backend/blogs/add_blog.php", {
-            method: "POST",
-            body: formData,
-            headers: {
-                Authorization: `Bearer ${authtoken}`,
-            },
-        });
-
-        let result = await response.json();
-        alert(result.success || result.error);
-    } catch (error) {
-        console.error("Error:", error);
-    }
-
-    return false; // Ensure no refresh
-});
-
-
 const token = localStorage.getItem("token"); // Get authentication token
-
-// Function to Open Delete Confirmation Modal
-function openDeleteModal(blogId) {
-    document
-        .getElementById("confirmDeleteButton")
-        .setAttribute("data-id", blogId);
-    document.getElementById("deleteBlogModal").style.display = "flex";
-}
-
-// Function to Close Delete Modal
-function closeDeleteModal() {
-    document.getElementById("deleteBlogModal").style.display = "none";
-}
-
-async function confirmDelete() {
-    const blogId = document
-        .getElementById("confirmDeleteButton")
-        .getAttribute("data-id");
-
-    try {
-        const response = await fetch(`${BASE_URL}/backend/blogs/blogs.php?id=${blogId}`, {
-            method: "DELETE",
-            // headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        });
-
-        const result = await response.json();
-        if (result.success) {
-            alert("Blog deleted successfully!");
-            closeDeleteModal();
-            fetchBlogs(1); // Refresh blog list
-        } else {
-            alert("Failed to delete blog.");
-        }
-    } catch (error) {
-        console.error("Error deleting blog:", error);
-    }
-}
 
 // Function to Fetch Blogs (for display) with Pagination
 async function fetchBlogs(page = 1) {
@@ -182,6 +88,54 @@ function updatePagination(currentPage, totalPages) {
 function changePage(page) {
     if (page < 1 || page > totalPages) return;
     fetchBlogs(page);
+}
+
+// Function to Open Delete Confirmation Modal
+function openDeleteModal(blogId) {
+    document
+        .getElementById("confirmDeleteButton")
+        .setAttribute("data-id", blogId);
+    document.getElementById("deleteBlogModal").style.display = "flex";
+}
+
+// Function to Close Delete Modal
+function closeDeleteModal() {
+    document.getElementById("deleteBlogModal").style.display = "none";
+}
+
+// Function to Close Delete Modal
+function closeDeleteModal() {
+    document.getElementById("deleteBlogModal").style.display = "none";
+}
+
+async function confirmDelete() {
+    const status = document.getElementById("status-deletebar")
+    status.innerHTML = "Loading..."
+    const blogId = document
+        .getElementById("confirmDeleteButton")
+        .getAttribute("data-id");
+
+    try {
+        const response = await fetch(`${BASE_URL}/backend/blogs/blogs.php?id=${blogId}`, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            status.innerHTML = "Blog deleted successfully!"
+            status.style.color = "green"
+            setTimeout(() => {
+                closeDeleteModal();
+                fetchBlogs(1); // Refresh blog list
+            }, 1000);
+        } else {
+            status.innerHTML = "Failed to delete blog!"
+            status.style.color = "red"
+        }
+    } catch (error) {
+        console.error("Error deleting blog:", error);
+    }
 }
 
 

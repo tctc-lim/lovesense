@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="stylesheet" href="../assets/fontawesome/css/all.css">
     <link rel="stylesheet" href="../css/mediaquery.css">
-    <script src="../js/dashboard.js"></script>
+    <script src="../js/verify.js"></script>
     <title>Manage Users</title>
 </head>
 
@@ -93,7 +93,8 @@
                             <option value="admin">Admin</option>
                         </select>
                     </div>
-                    <button type="submit">Add User</button>
+                    <button type="submit" style="text-align: center;">Add User</button>
+                    <p id="status-bar"></p>
                 </form>
             </div>
         </div>
@@ -105,6 +106,7 @@
                 <p>This action cannot be undone. Are you sure you want to proceed with this action?</p>
                 <button onclick="confirmUserDelete()" class="confirm-delete">Yes, Delete</button>
                 <button onclick="closeUserDeleteModal()" class="confirm-cancel">Cancel</button>
+                <p id="status-bar3"></p>
             </div>
         </div>
 
@@ -126,6 +128,7 @@
                         </select>
                     </div>
                     <button type="submit">Update User</button>
+                    <p id="status-bar2"></p>
                 </form>
             </div>
         </div>

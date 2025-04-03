@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
         })
     } catch (error) {
-        console.error("Error fetching recent blogs:", error);
+        blogTable.innerHTML = `<tr><td colspan='3'>${error}</td></tr>`;
     }
 });
 

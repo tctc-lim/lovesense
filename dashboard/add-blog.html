@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="stylesheet" href="../css/mediaquery.css">
     <link rel="stylesheet" href="../assets/fontawesome/css/all.css">
-    <script src="../js/dashboard.js"></script>
+    <script src="../js/verify.js"></script>
     <script src="https://cdn.tiny.cloud/1/uhe3odlme9v44d3l3usxdv9qizug88pw3tgvum72ns5dr0el/tinymce/7/tinymce.min.js"
         referrerpolicy="origin"></script>
 
@@ -98,7 +98,7 @@
                 </div>
 
                 <div class="preview-container">
-                    <div class="preview" style="" id="preview2">No Image</div>
+                    <div class="preview" id="preview2">No Image</div>
                 </div>
 
                 <div class="blog-content-div">
@@ -134,10 +134,118 @@
                 <div class="blog-button">
                     <button type="submit">Add Blog</button>
                 </div>
+
+                <p id="status-bar" style="text-align: center; color: white; font-size: 18px;"></p>
             </form>
         </div>
     </div>
-    <script src="../js/blogs.js"></script>
+    <script>
+        const authtoken = localStorage.getItem("token");
+        const status = document.getElementById('status-bar');
+        function previewImage(input, previewId) {
+            const file = input.files[0]; // Get the first file
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    document.getElementById(previewId).innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width: 100%; height: auto;">`;
+                };
+
+                reader.onerror = function (error) {
+                    console.error("Error loading file:", error);
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                document.getElementById(previewId).innerHTML = "No Image";
+            }
+        }
+
+        // Event listeners for image inputs
+        document.getElementById("image1").addEventListener("change", function () {
+            previewImage(this, "preview1");
+        });
+
+        document.getElementById("image2").addEventListener("change", function () {
+            previewImage(this, "preview2");
+        });
+
+        document.getElementById("blogForm").addEventListener("submit", async (e) => {
+            status.innerHTML = "Loading"
+            e.preventDefault(); // Stop form submission
+
+            // Ensure TinyMCE content is updated in the form data
+            tinymce.triggerSave();
+
+            let formData = new FormData(e.target);
+
+            try {
+                let response = await fetch("http://localhost:8000/backend/blogs/add_blog.php", {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        Authorization: `Bearer ${authtoken}`,
+                    },
+                });
+
+                let result = await response.json();
+                status.innerHTML = `${result.success || result.error}`;
+                if (result.success) {
+                    status.style.color = "green"
+                    e.target.reset(); // Reset the form fields (but do not reload)
+                    tinymce.get("content1").setContent(""); // Clear TinyMCE editor
+                    setTimeout(() => {
+                        window.location.href = "my-blogs.html"; // Change to your desired page
+                    }, 2000)
+                } else {
+                    status.style.color = "red"
+                }
+            } catch (error) {
+                status.innerHTML = `${error}`;
+                status.style.color = "red"
+            }
+
+            return false; // Ensure no refresh
+        });
+
+        // Function to Open Delete Confirmation Modal
+        function openDeleteModal(blogId) {
+            document
+                .getElementById("confirmDeleteButton")
+                .setAttribute("data-id", blogId);
+            document.getElementById("deleteBlogModal").style.display = "flex";
+        }
+
+        // Function to Close Delete Modal
+        function closeDeleteModal() {
+            document.getElementById("deleteBlogModal").style.display = "none";
+        }
+
+        async function confirmDelete() {
+            const blogId = document
+                .getElementById("confirmDeleteButton")
+                .getAttribute("data-id");
+
+            try {
+                const response = await fetch(`${BASE_URL}/backend/blogs/blogs.php?id=${blogId}`, {
+                    method: "DELETE",
+                    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert("Blog deleted successfully!");
+                    closeDeleteModal();
+                    fetchBlogs(1); // Refresh blog list
+                } else {
+                    alert("Failed to delete blog.");
+                }
+            } catch (error) {
+                console.error("Error deleting blog:", error);
+            }
+        }
+    </script>
 </body>
 
 </html>

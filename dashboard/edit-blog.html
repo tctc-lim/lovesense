@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="stylesheet" href="../css/mediaquery.css">
     <link rel="stylesheet" href="../assets/fontawesome/css/all.css">
-    <script src="../js/dashboard.js"></script>
+    <script src="../js/verify.js"></script>
     <script src="https://cdn.tiny.cloud/1/uhe3odlme9v44d3l3usxdv9qizug88pw3tgvum72ns5dr0el/tinymce/7/tinymce.min.js"
         referrerpolicy="origin"></script>
 
@@ -60,7 +60,8 @@
     <div id="dashboard">
         <div class="top-bar">
             <img src="../images/logos/logo2.png" alt="logo" class="logo" width="150px">
-            <h1 class="user">Welcome, <p id="loggedinuser"></p></h1>
+            <h1 class="user">Welcome, <p id="loggedinuser"></p>
+            </h1>
         </div>
         <div class="bottom-bar">
             <div class="user-bar">
@@ -134,6 +135,8 @@
                 <div class="blog-button">
                     <button type="submit">Update Blog</button>
                 </div>
+                <p id="status-message"
+                    style="font-size: 18px; text-align: center; color: white; margin: 10px 2px; font-weight: 600;"></p>
             </form>
         </div>
     </div>
@@ -147,6 +150,8 @@
             }
 
             const BASE_URL = "http://localhost:8000"; // Change to your API URL
+            const message = document.getElementById("status-message")
+
 
             // Fetch blog details and prefill form
             fetch(`${BASE_URL}/backend/blogs/blogs.php?id=${blogId}`)
@@ -200,6 +205,7 @@
             });
 
             document.getElementById("edit-blog-form").addEventListener("submit", async (e) => {
+                message.innerHTML = "Loading..."
                 e.preventDefault();
 
                 const id = document.getElementById("blogId").value;
@@ -219,29 +225,6 @@
 
                 let image1 = document.getElementById("preview-image1").getAttribute("data-filename");
                 let image2 = document.getElementById("preview-image2").getAttribute("data-filename");
-
-                // ✅ If new images are selected, upload them separately
-                if (image1File || image2File) {
-                    const formData = new FormData();
-                    formData.append("id", id);
-                    if (image1File) formData.append("image1", image1File);
-                    if (image2File) formData.append("image2", image2File);
-
-                    const imageUploadResponse = await fetch(`${BASE_URL}/backend/blogs/upload_images.php`, {
-                        method: "POST",
-                        body: formData,
-                        headers: { "Authorization": `Bearer ${token}` }
-                    });
-
-                    const imageUploadResult = await imageUploadResponse.json();
-                    if (imageUploadResult.success) {
-                        image1 = imageUploadResult.image1 || image1;
-                        image2 = imageUploadResult.image2 || image2;
-                    } else {
-                        alert("Image upload failed!");
-                        return;
-                    }
-                }
 
                 // ✅ Now send JSON request with updated image paths
                 const requestData = {
@@ -269,15 +252,42 @@
 
                 const result = await response.json();
                 if (result.success) {
-                    alert("Blog updated successfully!");
-                    window.location.href = "my-blogs.html"; // Redirect after success
+                    message.innerHTML = "Blog updated successfully!"
+                    message.style.color = "green"
+                    // ✅ If new images are selected, upload them separately
+                    if (image1File || image2File) {
+                        const formData = new FormData();
+                        formData.append("id", id);
+                        if (image1File) formData.append("image1", image1File);
+                        if (image2File) formData.append("image2", image2File);
+
+                        const imageUploadResponse = await fetch(`${BASE_URL}/backend/blogs/upload_images.php`, {
+                            method: "POST",
+                            body: formData,
+                            headers: { "Authorization": `Bearer ${token}` }
+                        });
+
+                        const imageUploadResult = await imageUploadResponse.json();
+                        if (imageUploadResult.success) {
+                            image1 = imageUploadResult.image1 || image1;
+                            image2 = imageUploadResult.image2 || image2;
+                            setTimeout(() => {
+                                window.location.href = "my-blogs.html"; // Redirect after success
+                            }, 2000);
+                        } else {
+                            message.innerHTML = "Upload Image Failed"
+                        }
+                        return false;
+                    }
                 } else {
-                    alert("Update failed: " + result.error);
+                    status.innerHTML = `Update failed: ${result.error}`;
+                    status.style.color = "red"
                 }
+
+                return false;
             });
 
         });
-
     </script>
 </body>
 

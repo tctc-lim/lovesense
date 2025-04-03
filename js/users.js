@@ -13,16 +13,6 @@ function verifyUser() {
     }
 }
 
-// Show loading spinner
-function showLoading() {
-    document.getElementById("loading").style.display = "block";
-}
-
-// Hide loading spinner
-function hideLoading() {
-    document.getElementById("loading").style.display = "none";
-}
-
 // ✅ Setup event listeners
 function setupEventListeners() {
     // Handle search input
@@ -41,6 +31,9 @@ function renderUserTable(users) { }
 // ✅ Fetch users (with search functionality)
 async function fetchUsers() {
     const searchQuery = document.getElementById("search")?.value || "";
+    const table = document.getElementById("userTable");
+
+    table.innerHTML = "<p class='loader2' id ='loader2'>Loading...</p>";
 
     try {
         const response = await fetch(
@@ -52,31 +45,34 @@ async function fetchUsers() {
 
         const usersData = await response.json();
         const users = usersData.users;
-        const table = document.getElementById("userTable");
 
-        table.innerHTML = "";
-
-        users.forEach((user) => {
-            table.innerHTML += `
-            <tr>
-                <td>${user.id}</td>
-                <td>${user.name}</td>
-                <td>${user.email}</td>
-                <td>${user.role}</td>
-                <td class="user-edit-delete">
-                    <i class="fa-solid fa-edit" onclick="openEditUserModal(${user.id}, '${user.name}', '${user.email}', '${user.role}')"></i>
-                    <i class="fa-solid fa-trash" onclick="openUserDeleteModal(${user.id})"></i>
-                </td>
-            </tr>
-        `;
-        });
+        setTimeout(() => {
+            table.innerHTML = "";
+            users.forEach((user) => {
+                table.innerHTML += `
+                <tr>
+                    <td>${user.id}</td>
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>${user.role}</td>
+                    <td class="user-edit-delete">
+                        <i class="fa-solid fa-edit" onclick="openEditUserModal(${user.id}, '${user.name}', '${user.email}', '${user.role}')"></i>
+                        <i class="fa-solid fa-trash" onclick="openUserDeleteModal(${user.id})"></i>
+                    </td>
+                </tr>
+            `;
+            });
+        }, 600);
     } catch (error) {
-        console.error("Error fetching users:", error);
+        document.getElementById("loader2").innerHTML = `${error}`
+        document.getElementById("loader2").style.color = 'red'
     }
 }
 
 // ✅ Delete User
 async function deleteUser(id) {
+    const status = document.getElementById("status-bar3");
+    status.innerHTML = "Loading ..."
     try {
         const response = await fetch(`${BASE_URL}/backend/users/delete_users.php`, {
             method: "DELETE",
@@ -88,10 +84,14 @@ async function deleteUser(id) {
         });
 
         if (!response.ok) throw new Error("Failed to delete user");
+        status.innerHTML = "successfully deleted user"
+        status.style.color = "green"
 
         await fetchUsers(); // Refresh user list
+        closeEditUserModal()
     } catch (error) {
-        console.error("Error deleting user:", error);
+        status.innerHTML = error;
+        status.style.color = "red"
     }
 }
 
@@ -99,6 +99,8 @@ async function deleteUser(id) {
 async function addUser(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
+    const status = document.getElementById("status-bar")
+    status.innerHTML = "Loading ...."
 
     try {
         const response = await fetch(
@@ -110,12 +112,17 @@ async function addUser(event) {
             }
         );
 
-        if (!response.ok) throw new Error("Failed to add user");
+        if (!response.ok) {
+            throw new Error("Failed to add user");
+        }
+        status.innerHTML = "Successfully added user";
+        status.style.color = "green"
 
         await fetchUsers();
         closeUserModal();
     } catch (error) {
-        console.error("Error adding user:", error);
+        status.innerHTML = error;
+        status.style.color = "red"
     }
 }
 
@@ -127,6 +134,8 @@ async function updateUser(event) {
     const name = document.getElementById("editUserName").value;
     const email = document.getElementById("editUserEmail").value;
     const role = document.getElementById("editUserRole").value;
+    const status = document.getElementById("status-bar2")
+    status.innerHTML = "Loading ...."
 
     try {
         const response = await fetch(`${BASE_URL}/backend/users/update_users.php`, {
@@ -138,12 +147,17 @@ async function updateUser(event) {
             body: JSON.stringify({ id, name, email, role }),
         });
 
-        if (!response.ok) throw new Error("Failed to update user");
+        if (!response.ok) {
+            throw new Error("Failed to add user");
+        }
+        status.innerHTML = "Successfully updated user";
+        status.style.color = "green"
 
         await fetchUsers();
         closeEditUserModal();
     } catch (error) {
-        console.error("Error updating user:", error);
+        status.innerHTML = error;
+        status.style.color = "red";
     }
 }
 
@@ -169,7 +183,6 @@ function closeUserDeleteModal() {
 
 function confirmUserDelete() {
     deleteUser(window.deleteUserId);
-    closeUserDeleteModal();
 }
 
 function openEditUserModal(id, name, email, role) {
