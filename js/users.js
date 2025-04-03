@@ -4,11 +4,23 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 
 function verifyUser() {
-    const userrole = localStorage.getItem("user")
+    // Parse user object from localStorage
+    const user = JSON.parse(localStorage.getItem("user"));
 
-    if (user.role !== "admin") {
-        window.location.href = "index.html"
-    };
+    // Check if the role is not "admin"
+    if (user && user.role !== "admin") {
+        window.location.href = "index.html";
+    }
+}
+
+// Show loading spinner
+function showLoading() {
+    document.getElementById("loading").style.display = "block";
+}
+
+// Hide loading spinner
+function hideLoading() {
+    document.getElementById("loading").style.display = "none";
 }
 
 // ✅ Setup event listeners

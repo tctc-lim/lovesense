@@ -31,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 } else {
     // process the GET request
 }
-?>
 
 // ✅ Get Headers
 $headers = function_exists("getallheaders") ? getallheaders() : get_request_headers();

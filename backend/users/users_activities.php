@@ -39,7 +39,7 @@ try {
     }
 
     // ✅ Fetch user activities
-    $stmt = $conn->prepare("SELECT action, timestamp FROM activities WHERE user_id = :user_id ORDER BY timestamp DESC LIMIT 10");
+    $stmt = $conn->prepare("SELECT action, timestamp FROM activities WHERE user_id = :user_id ORDER BY timestamp DESC LIMIT 7");
     $stmt->execute([":user_id" => $userId]);
     $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

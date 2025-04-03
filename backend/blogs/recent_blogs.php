@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 
 // Fetch the last 5 blogs (most recent first)
 try {
-    $stmt = $conn->prepare("SELECT id, title, created_at, thestatus FROM blogs ORDER BY created_at DESC LIMIT 5");
+    $stmt = $conn->prepare("SELECT id, title, created_at, status FROM blogs ORDER BY created_at DESC LIMIT 5");
     $stmt->execute();
     $recentBlogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

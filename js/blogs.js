@@ -1,22 +1,29 @@
 document.addEventListener("DOMContentLoaded", async function () {
-    fetchBlogs();
-});
+    // Fetch blogs on page load
+fetchBlogs(1);
+})
 
 function previewImage(input, previewId) {
-    const preview = document.getElementById(previewId);
-    const file = input.files[0];
+    const file = input.files[0]; // Get the first file
 
     if (file) {
         const reader = new FileReader();
+        
         reader.onload = function (e) {
-            preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+            document.getElementById(previewId).innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width: 100%; height: auto;">`;
         };
+
+        reader.onerror = function (error) {
+            console.error("Error loading file:", error);
+        };
+
         reader.readAsDataURL(file);
     } else {
-        preview.innerHTML = "No Image";
+        document.getElementById(previewId).innerHTML = "No Image";
     }
 }
 
+// Event listeners for image inputs
 document.getElementById("image1").addEventListener("change", function () {
     previewImage(this, "preview1");
 });
@@ -27,6 +34,9 @@ document.getElementById("image2").addEventListener("change", function () {
 
 document.getElementById("blogForm").addEventListener("submit", async (e) => {
     e.preventDefault(); // Stop form submission
+
+    // Ensure TinyMCE content is updated in the form data
+    tinymce.triggerSave();
 
     let formData = new FormData(e.target);
     const authtoken = localStorage.getItem("token");
@@ -49,76 +59,15 @@ document.getElementById("blogForm").addEventListener("submit", async (e) => {
     return false; // Ensure no refresh
 });
 
+
 const token = localStorage.getItem("token"); // Get authentication token
-
-// Function to Open Edit Modal
-function openEditModal(blog) {
-    document.getElementById("editBlogId").value = blog.id;
-    document.getElementById("editBlogTitle").value = blog.title;
-    document.getElementById("editBlogContent1").value = blog.content1;
-    document.getElementById("editBlogContent2").value = blog.content2;
-    document.getElementById("editBlogTag1").value = blog.tag1;
-    document.getElementById("editBlogTag2").value = blog.tag2;
-    document.getElementById("editBlogTag3").value = blog.tag3;
-    document.getElementById("editBlogStatus").value = blog.thestatus;
-
-    document.getElementById("editBlogModal").style.display = "block";
-}
-
-// Function to Close Edit Modal
-function closeEditModal() {
-    document.getElementById("editBlogModal").style.display = "none";
-}
-
-// ✅ Function to Submit Edit Request
-document
-    .getElementById("editBlogForm")
-    .addEventListener("submit", async function (event) {
-        event.preventDefault(); // Prevent page reload
-
-        const blogId = document.getElementById("editBlogId").value;
-        const updatedBlog = {
-            id: blogId,
-            title: document.getElementById("editBlogTitle").value,
-            content1: document.getElementById("editBlogContent1").value,
-            content2: document.getElementById("editBlogContent2").value,
-            tag1: document.getElementById("editBlogTag1").value,
-            tag2: document.getElementById("editBlogTag2").value,
-            tag3: document.getElementById("editBlogTag3").value,
-            thestatus: document.getElementById("editBlogStatus").value = blog.thestatus,
-        };
-
-        try {
-            const response = await fetch(`${BASE_URL}/backend/blogs/blogs.php?id=${blogId}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-                body: JSON.stringify(updatedBlog),
-            });
-
-            const result = await response.json();
-            if (result.success) {
-                alert("Blog updated successfully!");
-                closeEditModal();
-                fetchBlogs(); // Refresh blog list
-            } else {
-                alert("Failed to update blog.");
-            }
-        } catch (error) {
-            console.error("Error updating blog:", error);
-        }
-
-        return false; // Explicitly prevent any default behavior
-    });
 
 // Function to Open Delete Confirmation Modal
 function openDeleteModal(blogId) {
     document
         .getElementById("confirmDeleteButton")
         .setAttribute("data-id", blogId);
-    document.getElementById("deleteBlogModal").style.display = "block";
+    document.getElementById("deleteBlogModal").style.display = "flex";
 }
 
 // Function to Close Delete Modal
@@ -134,14 +83,14 @@ async function confirmDelete() {
     try {
         const response = await fetch(`${BASE_URL}/backend/blogs/blogs.php?id=${blogId}`, {
             method: "DELETE",
-            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            // headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
 
         const result = await response.json();
         if (result.success) {
             alert("Blog deleted successfully!");
-            closeUserDeleteModal();
-            fetchBlogs(); // Refresh blog list
+            closeDeleteModal();
+            fetchBlogs(1); // Refresh blog list
         } else {
             alert("Failed to delete blog.");
         }
@@ -150,10 +99,10 @@ async function confirmDelete() {
     }
 }
 
-// Function to Fetch Blogs (for display)
-async function fetchBlogs() {
+// Function to Fetch Blogs (for display) with Pagination
+async function fetchBlogs(page = 1) {
     try {
-        const response = await fetch(`${BASE_URL}/backend/blogs/blogs.php`);
+        const response = await fetch(`${BASE_URL}/backend/blogs/blogs.php?page=${page}&limit=7`);
         const blogdata = await response.json();
         blogs = blogdata.blogs;
 
@@ -164,25 +113,77 @@ async function fetchBlogs() {
             blogTable.innerHTML += `
                 <div class="blog-data">
                     <div class="blog-data-content">
-                        <p class="the-blog-id">${index + 1}.</p>
+                        <p class="the-blog-id">${index + 1 + (page - 1) * 5}.</p>
                         <img src="../backend/blogs/${blog.image1}" alt="Image1" width="300px" height="200px" class="blog-img">
                     </div>
                     <div class="blog-details">
                         <h2>${blog.title}</h2>
                         <p>${blog.content1.substring(0, 100)}...</p>
-                        <p>Status: ${blog.thestatus}</p>
+                        <p>Status: ${blog.status}</p>
                         <button onclick="viewBlog(${blog.id})">See More</button>
-                        <button onclick='openEditModal(${JSON.stringify(blog)})'>Edit</button>
+                        <button class="edit-btn" data-id="${blog.id}">Edit</button>
                         <button onclick='openDeleteModal(${blog.id})'>Delete</button>
                     </div>
                 </div>
-              `;
+            `;
         });
+
+        // Attach event listener to all Edit buttons
+        document.querySelectorAll(".edit-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                const blogId = this.getAttribute("data-id");
+                window.location.href = `edit-blog.html?id=${blogId}`;
+            });
+        });
+
+        updatePagination(blogdata.current_page, blogdata.total_pages);
     } catch (error) {
         console.error("Error fetching blogs:", error);
     }
 }
 
 function viewBlog(blogId) {
-    window.location.href = `/blog-details.html?id=${blogId}`;
+    window.location.href = `../blog-details.html?id=${blogId}`;
 }
+
+
+// Function to Update Pagination Controls
+function updatePagination(currentPage, totalPages) {
+    const paginationContainer = document.getElementById("paginationControls") || document.createElement("div");
+    paginationContainer.id = "paginationControls";
+
+    let pageLinks = "";
+
+    // Create "Previous" Button
+    pageLinks += `
+        <button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? "disabled" : ""}>Previous</button>
+    `;
+
+    // Create page number buttons (1 to totalPages, but limited range for UI)
+    let startPage = Math.max(1, currentPage - 2);
+    let endPage = Math.min(totalPages, currentPage + 2);
+
+    for (let i = startPage; i <= endPage; i++) {
+        pageLinks += `
+            <button onclick="changePage(${i})" ${i === currentPage ? "class='active'" : ""}>${i}</button>
+        `;
+    }
+
+    // Create "Next" Button
+    pageLinks += `
+        <button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? "disabled" : ""}>Next</button>
+    `;
+
+    paginationContainer.innerHTML = pageLinks;
+    document.getElementById("blogTable").after(paginationContainer);
+}
+
+// Function to Change Page
+function changePage(page) {
+    if (page < 1 || page > totalPages) return;
+    fetchBlogs(page);
+}
+
+
+
+

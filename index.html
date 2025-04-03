@@ -163,6 +163,7 @@
                                     <li><a class="ts-scroll" href="#"><span>Home</span></a></li>
                                     <li><a class="ts-scroll" href="#aboutUs"><span>About</span></a></li>
                                     <li><a class="ts-scroll" href="#service"><span>Service</span></a></li>
+                                    <li><a class="ts-scroll" href="#blogSection"><span>Blogs</span></a></li>
                                     <li><a class="ts-scroll" href="#contactUs"><span>Contact</span></a></li>
                                     <li><a class="ts-scroll" class="btn" href="#bookUs">Book Now</a></li>
                                 </ul>
@@ -460,6 +461,17 @@
                             aria-hidden="true">×</span></button>
                 </div>
                 <!-- </div> -->
+            </div>
+        </section>
+        <section id="blogSection">
+            <h2 class="text-medium ourColor">Latest Blogs</h2>
+            <div id="blogContainer" class="blog-grid"></div>
+
+            <!-- Pagination -->
+            <div id="paginationControls">
+                <button id="prevPage" onclick="changePage(-1)">Previous</button>
+                <span id="currentPage">1</span>
+                <button id="nextPage" onclick="changePage(1)">Next</button>
             </div>
         </section>
 
@@ -958,6 +970,66 @@
                 }
             });
         }
+
+        const BASE_URL = "http://localhost:8000";
+        let currentPage = 1;
+        const limit = 6; // Number of blogs per page
+
+        // Fetch blogs from the backend
+        async function fetchBlogs(page = 1) {
+            try {
+                const response = await fetch(`${BASE_URL}/home_blogs.php?page=${page}&limit=${limit}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    displayBlogs(data.blogs);
+                    updatePagination(data.currentPage, data.totalPages);
+                } else {
+                    console.error("Error fetching blogs:", data.error);
+                }
+            } catch (error) {
+                console.error("Error fetching blogs:", error);
+            }
+        }
+
+        // Display blogs in cards
+        function displayBlogs(blogs) {
+            const blogContainer = document.getElementById("blogContainer");
+            blogContainer.innerHTML = "";
+
+            blogs.forEach(blog => {
+                const blogCard = document.createElement("div");
+                blogCard.classList.add("blog-card");
+
+                blogCard.innerHTML = `
+            <img src="../backend/blogs/${blog.image1}" alt="${blog.title}">
+            <div class="blog-content">
+                <h3>${blog.title}</h3>
+                <p>${blog.content1.substring(0, 100)}...</p>
+                <a href="blog-details.html?id=${blog.id}" class="read-more">Read More</a>
+            </div>
+        `;
+
+                blogContainer.appendChild(blogCard);
+            });
+        }
+
+        // Update pagination controls
+        function updatePagination(current, total) {
+            document.getElementById("currentPage").textContent = `Page ${current} of ${total}`;
+            document.getElementById("prevPage").disabled = current === 1;
+            document.getElementById("nextPage").disabled = current === total;
+        }
+
+        // Handle pagination button clicks
+        function changePage(step) {
+            currentPage += step;
+            fetchBlogs(currentPage);
+        }
+
+        // Load blogs when the page loads
+        document.addEventListener("DOMContentLoaded", () => fetchBlogs(currentPage));
+
     </script>
 
 

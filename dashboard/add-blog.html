@@ -9,6 +9,20 @@
     <link rel="stylesheet" href="../css/mediaquery.css">
     <link rel="stylesheet" href="../assets/fontawesome/css/all.css">
     <script src="../js/dashboard.js"></script>
+    <script src="https://cdn.tiny.cloud/1/uhe3odlme9v44d3l3usxdv9qizug88pw3tgvum72ns5dr0el/tinymce/7/tinymce.min.js"
+        referrerpolicy="origin"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            tinymce.init({
+                selector: "textarea",
+                plugins: "link image table lists",
+                toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright | image link",
+                automatic_uploads: true,
+                file_picker_types: "image",
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -44,83 +58,86 @@
         </a>
     </div>
     <div id="dashboard">
-        <div id="dashboard">
-            <div class="top-bar">
-                <img src="../images/logos/logo2.png" alt="logo" class="logo" width="150px">
-                <h1 class="user">Welcome,<p id="loggedinuser"></p>
-            </div>
-            <div class="bottom-bar">
-                <div class="user-bar">
-                    <p>Add New Blog</p>
-                </div>
-                <form id="blogForm" enctype="multipart/form-data">
-                    <div class="input-div">
-                        <label for="blogtitle">Blog Title:</label>
-                        <input type="text" id="blogtitle" name="title" placeholder="Blog Title" required>
-                    </div>
-
-                    <div class="image-div">
-                        <label for="image1">Add First Image:</label>
-                        <input type="file" name="image1" id="image1" accept="image/*" required>
-                    </div>
-                    <div class="preview-container">
-                        <div class="preview" id="preview1">No Image</div>
-                    </div>
-
-                    <div class="input-div">
-                        <label for="read-time">Estimated Read Time:</label>
-                        <input type="text" name="read-time" id="read-time" placeholder="e.g 3 MIN READ" required>
-                    </div>
-
-                    <div class="blog-content-div">
-                        <label for="content1">First Blog Content:</label>
-                        <textarea name="content1" id="content1" placeholder="Blog Content 1" required></textarea>
-                    </div>
-
-                    <div class="image-div">
-                        <label for="image2">Add Second Image:</label>
-                        <input type="file" name="image2" id="image2" accept="image/*" required>
-                    </div>
-                    <div class="preview-container">
-                        <div class="preview" id="preview2">No Image</div>
-                    </div>
-
-                    <label for="content2">Second Blog Content:</label>
-                    <textarea name="content2" id="content2" placeholder="Blog Content 2" required></textarea>
-
-                    <div class="tag-div">
-                        <div class="tags">
-                            <label for="tag1">Tag 1:</label>
-                            <input type="text" name="tag1" id="tag1" placeholder="Tag 1" required>
-                        </div>
-
-                        <div class="tags">
-                            <label for="tag2">Tag 2:</label>
-                            <input type="text" name="tag2" id="tag2" placeholder="Tag 2" required>
-                        </div>
-
-                        <div class="tags">
-                            <label for="tag3">Tag 3:</label>
-                            <input type="text" name="tag3" id="tag3" placeholder="Tag 3" required>
-                        </div>
-
-                        <div class="status-div">
-                            <label for="thestatus">Blog Status:</label>
-                            <select name="thestatus" id="thestatus" required>
-                                <option value="PENDING">Pending</option>
-                                <option value="COMPLETED">Completed</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="blog-button">
-                        <button type="submit">Add Blog</button>
-                    </div>
-                </form>
-            </div>
+        <div class="top-bar">
+            <img src="../images/logos/logo2.png" alt="logo" class="logo" width="150px">
+            <h1 class="user">Welcome, <p id="loggedinuser"></p>
+            </h1>
         </div>
-        <script src="../js/blogs.js"></script>
+        <div class="bottom-bar">
+            <div class="user-bar">
+                <p>Add New Blog</p>
+            </div>
+            <form id="blogForm" enctype="multipart/form-data">
+                <div class="input-div">
+                    <label for="blogtitle">Blog Title:</label>
+                    <input type="text" id="blogtitle" name="title" placeholder="Blog Title" required>
+                </div>
 
+                <div class="input-div">
+                    <label for="read-time">Estimated Read Time:</label>
+                    <input type="text" name="read-time" id="read-time" placeholder="e.g 3 MIN READ" required>
+                </div>
+
+                <div class="image-div">
+                    <label for="image1">Add First Image:</label>
+                    <input type="file" name="image1" id="image1" accept="image/*">
+                </div>
+
+                <div class="preview-container">
+                    <div class="preview" id="preview1">No Image</div>
+                </div>
+
+                <div class="blog-content-div">
+                    <label for="content1">First Blog Content:</label>
+                    <textarea name="content1" id="content1">Start your blog here!</textarea>
+                </div>
+
+                <div class="image-div">
+                    <label for="image2">Add Second Image:</label>
+                    <input type="file" name="image2" id="image2" accept="image/*">
+                </div>
+
+                <div class="preview-container">
+                    <div class="preview" style="" id="preview2">No Image</div>
+                </div>
+
+                <div class="blog-content-div">
+                    <label for="content2">Second Blog Content:</label>
+                    <textarea name="content2" id="content2">Start your blog here!</textarea>
+                </div>
+
+                <div class="tag-div">
+                    <div class="tags">
+                        <label for="tag1">Tag 1:</label>
+                        <input type="text" name="tag1" id="tag1" placeholder="Tag 1" required>
+                    </div>
+
+                    <div class="tags">
+                        <label for="tag2">Tag 2:</label>
+                        <input type="text" name="tag2" id="tag2" placeholder="Tag 2" required>
+                    </div>
+
+                    <div class="tags">
+                        <label for="tag3">Tag 3:</label>
+                        <input type="text" name="tag3" id="tag3" placeholder="Tag 3" required>
+                    </div>
+
+                    <div class="status-div">
+                        <label for="status">Blog Status:</label>
+                        <select name="status" id="status" required>
+                            <option value="PENDING">Pending</option>
+                            <option value="COMPLETED">Completed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="blog-button">
+                    <button type="submit">Add Blog</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="../js/blogs.js"></script>
 </body>
 
 </html>

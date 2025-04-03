@@ -16,8 +16,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         // ✅ Count total blogs
         const totalBlogs = blogs.length;
-        const pendingBlogs = blogs.filter(blog => blog.thestatus === "PENDING").length;
-        const completedBlogs = blogs.filter(blog => blog.thestatus === "COMPLETED").length;
+        const pendingBlogs = blogs.filter(blog => blog.status === "PENDING").length;
+        const completedBlogs = blogs.filter(blog => blog.status === "COMPLETED").length;
+        console.log(pendingBlogs)
 
         // ✅ Update the dashboard safely
         const blogCards = document.querySelectorAll(".cards .card p");
@@ -52,6 +53,19 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (userCard) userCard.style.display = "none";
         }
 
+        const userResponse = await fetch(`${BASE_URL}/backend/users/read_users.php`, {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
+
+        const userDataResponse = await userResponse.json();
+        const users = userDataResponse.users || [];
+
+        // ✅ Ensure the element exists before setting text
+        const loggedInUserElement = document.getElementById("loggedinuser");
+        if (loggedInUserElement) {
+            loggedInUserElement.textContent = user.name;
+        }
+        
         // ✅ Fetch recent activities
         const activityResponse = await fetch(`${BASE_URL}/backend/users/users_activities.php`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -101,7 +115,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <td>${index + 1}</td>
                 <td>${blog.title}</td>
                 <td>${new Date(blog.created_at).toLocaleString()}</td>
-                <td class="recent-status">${blog.thestatus}</td>
+                <td class="recent-status">${blog.status}</td>
             `;
             blogTable.appendChild(row);
         });

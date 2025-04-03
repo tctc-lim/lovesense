@@ -1,7 +1,6 @@
 async function login(event) {
     event.preventDefault(); // Prevent page reload
 
-    // Get input values
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
     const emailError = document.getElementById("emailError");
@@ -31,7 +30,6 @@ async function login(event) {
     loader.style.display = "block";
 
     try {
-        // Send API request
         const response = await fetch("http://localhost:8000/backend/auth/auth.php?action=login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -40,25 +38,37 @@ async function login(event) {
 
         const data = await response.json();
 
-        if (response.ok) {
-            message.style.color = "green";
-            message.innerText = "Login successful!";
-            
-            // Save token and user details to local storage
-            localStorage.setItem("token", data.token); // Save token
-            localStorage.setItem("user", JSON.stringify(data.user)); // Save user details as JSON
-
-            setTimeout(() => {
-                window.location.href = "dashboard/index.html"; // Redirect to dashboard
-            }, 2000);
-        } else {
-            message.style.color = "red";
-            message.innerText = data.error || "Login failed";
+        if (!response.ok || !data.success) {
+            // Handle invalid credentials properly
+            throw new Error(data.error || "Login failed");
         }
+
+        message.style.color = "green";
+        message.innerText = "Login successful!";
+
+        // Save token and user details
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        setTimeout(() => {
+            window.location.href = "dashboard/index.html";
+        }, 2000);
     } catch (error) {
         message.style.color = "red";
-        message.innerText = "Error connecting to server";
+        message.innerText = error.message;
     } finally {
         loader.style.display = "none"; // Hide loader
     }
 }
+function VerifyLoginUser() {
+    // Parse user object from localStorage
+    const user = JSON.parse(localStorage.getItem("user"));
+    const authtoken = (localStorage.getItem("token"));
+
+    // Check if the role is not "admin"
+    if (user && user.role && authtoken) {
+        window.location.href = "/dashboard/index.html";
+    }
+}
+
+VerifyLoginUser()
