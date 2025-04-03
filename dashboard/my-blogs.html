@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read Blogs</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/mediaquery.css">
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.css">
+    <script src="../js/verify.js"></script>
+    <script src="https://cdn.tiny.cloud/1/uhe3odlme9v44d3l3usxdv9qizug88pw3tgvum72ns5dr0el/tinymce/7/tinymce.min.js"
+    referrerpolicy="origin"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        tinymce.init({
+            selector: "textarea",
+            plugins: "link image table lists",
+            toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright | image link",
+            automatic_uploads: true,
+            file_picker_types: "image",
+        });
+    });
+</script>
+</head>
+
+<body>
+    <div class="nav">
+        <div class="menu-bar">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+        <a href="/dashboard/index.html" class="nav-links">
+            <i class="fa-solid fa-house-user"></i>
+            <p>Home</p>
+        </a>
+        <hr />
+        <a href="/dashboard/my-blogs.html" class="nav-links">
+            <i class="fa-solid fa-blog"></i>
+            <p>My Blogs</p>
+        </a>
+        <hr />
+        <a href="/dashboard/add-blog.html" class="nav-links">
+            <i class="fa-solid fa-plus"></i>
+            <p>New Blog</p>
+        </a>
+        <hr />
+        <div id="userstab">
+            <a href="/dashboard/users.html" class="nav-links" id="usersTab">
+                <i class="fa-solid fa-users"></i>
+                <p>Users</p>
+            </a>
+            <hr />
+        </div>
+        <a href="../login.html" class="nav-links">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <p>Logout</p>
+        </a>
+    </div>
+    <div id="dashboard">
+        <div class="top-bar">
+            <img src="../images/logos/logo2.png" alt="logo" class="logo" width="150px">
+            <h1 class="user">Welcome,<p id="loggedinuser"></p>
+        </div>
+        <div class="bottom-bar">
+            <div class="blog-container">
+                <div class="user-bar">
+                    <p>My Blog</p>
+                </div>
+                <div id="blogTable"><p class="loader">Loading...</p></div>
+                <div id="paginationControls"></div> <!-- Pagination Here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteBlogModal" class="modal">
+        <div class="modal-content">
+            <h2 class="deleteTitle">Are you sure?</h2>
+            <p>This action cannot be undone. Do you want to delete this blog?</p>
+            <button id="confirmDeleteButton" class="confirm-delete" onclick="confirmDelete()">Yes, Delete</button>
+            <button onclick="closeDeleteModal()" class="confirm-cancel">Cancel</button>
+            <p id="status-deletebar" style="text-align: center; color: black; font-size: 18px;"></p>
+        </div>
+    </div>
+
+    <script src="../js/blogs.js"></script>
+</body>
+
+</html>

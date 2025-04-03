@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.css">
+    <link rel="stylesheet" href="../css/mediaquery.css">
+    <script src="../js/verify.js"></script>
+    <title>Manage Users</title>
+</head>
+
+<body>
+    <div class="nav">
+        <div class="menu-bar">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+        <a href="/dashboard/index.html" class="nav-links">
+            <i class="fa-solid fa-house-user"></i>
+            <p>Home</p>
+        </a>
+        <hr />
+        <a href="/dashboard/my-blogs.html" class="nav-links">
+            <i class="fa-solid fa-blog"></i>
+            <p>My Blogs</p>
+        </a>
+        <hr />
+        <a href="/dashboard/add-blog.html" class="nav-links">
+            <i class="fa-solid fa-plus"></i>
+            <p>New Blog</p>
+        </a>
+        <hr />
+        <div id="userstab">
+            <a href="/dashboard/users.html" class="nav-links" id="usersTab">
+                <i class="fa-solid fa-users"></i>
+                <p>Users</p>
+            </a>
+            <hr />
+        </div>
+        <a href="../login.html" class="nav-links">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <p>Logout</p>
+        </a>
+    </div>
+    <div id="dashboard">
+        <div id="dashboard">
+            <div class="top-bar">
+                <img src="../images/logos/logo2.png" alt="logo" class="logo" width="150px">
+                <h1 class="user">Welcome,<p id="loggedinuser"></p>  
+            </div>
+            <div class="bottom-bar">
+                <div class="user-bar">
+                    <p>User Management</p>
+                    <div>
+                        <input type="text" id="search" placeholder="Search users..." onkeyup="fetchUsers()">
+                        <button onclick="openUserAddModal()">Add User</button>
+                    </div>
+                </div>
+
+                <div class="table-div">
+                    <table class="user-table">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add User Modal -->
+        <div id="userModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeUserModal()">&times;</span>
+                <h2 id="modalTitle">Add User</h2>
+                <form id="addUserForm">
+                    <div>
+
+                        <input type="text" name="name" placeholder="Name" required>
+                        <input type="email" name="email" placeholder="Email" required>
+                    </div>
+                    <div>
+                        <input type="password" name="password" placeholder="Password" required>
+                        <select name="role">
+                            <option value="blog_poster">Blog Poster</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <button type="submit" style="text-align: center;">Add User</button>
+                    <p id="status-bar"></p>
+                </form>
+            </div>
+        </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div id="deleteModal" class="modal">
+            <div class="modal-content">
+                <h2 class="deleteTitle">Are you sure?</h2>
+                <p>This action cannot be undone. Are you sure you want to proceed with this action?</p>
+                <button onclick="confirmUserDelete()" class="confirm-delete">Yes, Delete</button>
+                <button onclick="closeUserDeleteModal()" class="confirm-cancel">Cancel</button>
+                <p id="status-bar3"></p>
+            </div>
+        </div>
+
+        <!-- Edit User Modal -->
+        <div id="editUserModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeEditUserModal()">&times;</span>
+                <h2 id="editTitle">Edit User</h2>
+                <form id="editUserForm">
+                    <div>
+                        <input type="text" disabled name="id" id="editUserId">
+                        <input type="text" name="name" id="editUserName" placeholder="Name" required>
+                    </div>
+                    <div>
+                        <input type="email" name="email" id="editUserEmail" placeholder="Email" required>
+                        <select name="role" id="editUserRole">
+                            <option value="blog_poster">Blog Poster</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <button type="submit">Update User</button>
+                    <p id="status-bar2"></p>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="../js/users.js"></script>
+
+</body>
+
+</html>

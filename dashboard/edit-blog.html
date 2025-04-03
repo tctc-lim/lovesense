@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Blog</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/mediaquery.css">
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.css">
+    <script src="../js/verify.js"></script>
+    <script src="https://cdn.tiny.cloud/1/uhe3odlme9v44d3l3usxdv9qizug88pw3tgvum72ns5dr0el/tinymce/7/tinymce.min.js"
+        referrerpolicy="origin"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            tinymce.init({
+                selector: "textarea",
+                plugins: "link image table lists",
+                toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright | image link",
+                automatic_uploads: true,
+                file_picker_types: "image",
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="nav">
+        <div class="menu-bar">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+        <a href="/dashboard/index.html" class="nav-links">
+            <i class="fa-solid fa-house-user"></i>
+            <p>Home</p>
+        </a>
+        <hr />
+        <a href="/dashboard/my-blogs.html" class="nav-links">
+            <i class="fa-solid fa-blog"></i>
+            <p>My Blogs</p>
+        </a>
+        <hr />
+        <a href="/dashboard/add-blog.html" class="nav-links">
+            <i class="fa-solid fa-plus"></i>
+            <p>New Blog</p>
+        </a>
+        <hr />
+        <div id="userstab">
+            <a href="/dashboard/users.html" class="nav-links" id="usersTab">
+                <i class="fa-solid fa-users"></i>
+                <p>Users</p>
+            </a>
+            <hr />
+        </div>
+        <a href="../login.html" class="nav-links">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <p>Logout</p>
+        </a>
+    </div>
+    <div id="dashboard">
+        <div class="top-bar">
+            <img src="../images/logos/logo2.png" alt="logo" class="logo" width="150px">
+            <h1 class="user">Welcome, <p id="loggedinuser"></p>
+            </h1>
+        </div>
+        <div class="bottom-bar">
+            <div class="user-bar">
+                <p>Edit Blog</p>
+            </div>
+            <form id="edit-blog-form">
+                <input type="hidden" id="blogId">
+                <div class="input-div">
+                    <label for="title">Blog Title:</label>
+                    <input type="text" id="title" name="title" placeholder="Blog Title" required>
+                </div>
+
+                <div class="input-div">
+                    <label for="read_time">Estimated Read Time:</label>
+                    <input type="text" name="read_time" id="read_time" placeholder="e.g 3 MIN READ" required>
+                </div>
+
+                <div class="image-div">
+                    <label for="image1">Add First Image:</label>
+                    <input type="file" name="image1" id="image1" accept="image/*">
+                </div>
+
+                <div class="preview-container">
+                    <img id="preview-image1" style="object-fit: contain;" class="preview" src="" alt="No Image" />
+                </div>
+
+                <div class="blog-content-div">
+                    <label for="content1">First Blog Content:</label>
+                    <textarea name="content1" id="content1">Start your blog here!</textarea>
+                </div>
+
+                <div class="image-div">
+                    <label for="image2">Add Second Image:</label>
+                    <input type="file" name="image2" id="image2" accept="image/*">
+                </div>
+
+                <div class="preview-container">
+                    <img id="preview-image2" class="preview" style="object-fit: contain;" src="" alt="No Image" />
+                </div>
+
+                <div class="blog-content-div">
+                    <label for="content2">Second Blog Content:</label>
+                    <textarea name="content2" id="content2">Start your blog here!</textarea>
+                </div>
+
+                <div class="tag-div">
+                    <div class="tags">
+                        <label for="tag1">Tag 1:</label>
+                        <input type="text" name="tag1" id="tag1" placeholder="Tag 1" required>
+                    </div>
+
+                    <div class="tags">
+                        <label for="tag2">Tag 2:</label>
+                        <input type="text" name="tag2" id="tag2" placeholder="Tag 2" required>
+                    </div>
+
+                    <div class="tags">
+                        <label for="tag3">Tag 3:</label>
+                        <input type="text" name="tag3" id="tag3" placeholder="Tag 3" required>
+                    </div>
+
+                    <div class="status-div">
+                        <label for="status">Blog Status:</label>
+                        <select name="status" id="status" required>
+                            <option value="PENDING">Pending</option>
+                            <option value="COMPLETED">Completed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="blog-button">
+                    <button type="submit">Update Blog</button>
+                </div>
+                <p id="status-message"
+                    style="font-size: 18px; text-align: center; color: white; margin: 10px 2px; font-weight: 600;"></p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const blogId = new URLSearchParams(window.location.search).get("id");
+            if (!blogId) {
+                alert("Blog ID is missing!");
+                return;
+            }
+
+            const BASE_URL = "http://localhost:8000"; // Change to your API URL
+            const message = document.getElementById("status-message")
+
+
+            // Fetch blog details and prefill form
+            fetch(`${BASE_URL}/backend/blogs/blogs.php?id=${blogId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById("blogId").value = data.blog.id;
+                        document.getElementById("title").value = data.blog.title;
+                        document.getElementById("read_time").value = data.blog.read_time;
+                        document.getElementById("content1").value = data.blog.content1;
+                        document.getElementById("content2").value = data.blog.content2;
+                        document.getElementById("tag1").value = data.blog.tag1;
+                        document.getElementById("tag2").value = data.blog.tag2;
+                        document.getElementById("tag3").value = data.blog.tag3;
+                        document.getElementById("status").value = data.blog.status;
+
+                        if (data.blog.image1) {
+                            document.getElementById("preview-image1").src = `${BASE_URL}/backend/blogs/${data.blog.image1}`;
+                            document.getElementById("preview-image1").setAttribute("data-filename", data.blog.image1);
+                        }
+                        if (data.blog.image2) {
+                            document.getElementById("preview-image2").src = `${BASE_URL}/backend/blogs/${data.blog.image2}`;
+                            document.getElementById("preview-image2").setAttribute("data-filename", data.blog.image2);
+                        }
+                    } else {
+                        alert("Failed to load blog data");
+                    }
+                });
+
+            // ✅ Update image preview when a new file is selected
+            document.getElementById("image1").addEventListener("change", function () {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById("preview-image1").src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            document.getElementById("image2").addEventListener("change", function () {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById("preview-image2").src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            document.getElementById("edit-blog-form").addEventListener("submit", async (e) => {
+                message.innerHTML = "Loading..."
+                e.preventDefault();
+
+                const id = document.getElementById("blogId").value;
+                const title = document.getElementById("title").value;
+                const read_time = document.getElementById("read_time").value;
+                const content1 = document.getElementById("content1").value;
+                const content2 = document.getElementById("content2").value;
+                const tag1 = document.getElementById("tag1").value;
+                const tag2 = document.getElementById("tag2").value;
+                const tag3 = document.getElementById("tag3").value;
+                const status = document.getElementById("status").value;
+
+                const image1File = document.getElementById("image1").files[0];
+                const image2File = document.getElementById("image2").files[0];
+
+                const token = localStorage.getItem("token");
+
+                let image1 = document.getElementById("preview-image1").getAttribute("data-filename");
+                let image2 = document.getElementById("preview-image2").getAttribute("data-filename");
+
+                // ✅ Now send JSON request with updated image paths
+                const requestData = {
+                    id,
+                    title,
+                    read_time,
+                    content1,
+                    content2,
+                    tag1,
+                    tag2,
+                    tag3,
+                    status,
+                    image1,
+                    image2
+                };
+
+                const response = await fetch(`${BASE_URL}/backend/blogs/blogs.php`, {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    message.innerHTML = "Blog updated successfully!"
+                    message.style.color = "green"
+                    // ✅ If new images are selected, upload them separately
+                    if (image1File || image2File) {
+                        const formData = new FormData();
+                        formData.append("id", id);
+                        if (image1File) formData.append("image1", image1File);
+                        if (image2File) formData.append("image2", image2File);
+
+                        const imageUploadResponse = await fetch(`${BASE_URL}/backend/blogs/upload_images.php`, {
+                            method: "POST",
+                            body: formData,
+                            headers: { "Authorization": `Bearer ${token}` }
+                        });
+
+                        const imageUploadResult = await imageUploadResponse.json();
+                        if (imageUploadResult.success) {
+                            image1 = imageUploadResult.image1 || image1;
+                            image2 = imageUploadResult.image2 || image2;
+                            setTimeout(() => {
+                                window.location.href = "my-blogs.html"; // Redirect after success
+                            }, 2000);
+                        } else {
+                            message.innerHTML = "Upload Image Failed"
+                        }
+                        return false;
+                    }
+                } else {
+                    status.innerHTML = `Update failed: ${result.error}`;
+                    status.style.color = "red"
+                }
+
+                return false;
+            });
+
+        });
+    </script>
+</body>
+
+</html>
