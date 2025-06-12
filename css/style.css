@@ -17242,3 +17242,60 @@ body[data-bg-image] {
 	border-radius: 10px;
 	cursor: pointer;
 }
+
+.slider-container {
+  width: 90%;
+  max-width: 800px;
+  margin: auto;
+  overflow: hidden;
+  position: relative;
+}
+
+.testimonial-slider {
+  display: flex;
+  transition: transform 0.4s ease-in-out;
+}
+
+.testimonial {
+  min-width: 100%;
+  box-sizing: border-box;
+  padding: 2rem;
+  background: #f0f0f0;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.testimonial p {
+  font-size: 1.1rem;
+  margin: 1rem 0px;
+  font-size: 17px;
+  padding: 20px;
+}
+
+.testimonial h4 {
+  font-weight: bold;
+  color: #333;
+}
+
+.slider-controls {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.slider-controls button {
+  background-color: #333;
+  color: #fff;
+  font-size: 1.5rem;
+  border: none;
+  margin: 0 0.5rem;
+  cursor: pointer;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+}
+
+.subtitle {
+	font-size: 18px;
+	margin-top: 20px;
+	color: #662D91;
+	font-weight: bold;
+}
