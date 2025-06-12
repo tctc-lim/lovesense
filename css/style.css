@@ -17242,3 +17242,14 @@ body[data-bg-image] {
 	border-radius: 10px;
 	cursor: pointer;
 }
+
+.note {
+	font-size: 18px;
+	color: #666;
+	text-align: center;
+}
+
+.col-md-4 {
+	display: flex;
+	justify-content: center;
+}
