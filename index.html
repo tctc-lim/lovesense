@@ -463,7 +463,6 @@
                 <!-- </div> -->
             </div>
         </section>
-
         <section class="books-section">
             <div class="container">
                 <h2 class="text-medium ourColor">Latest Releases</h2>
@@ -489,8 +488,58 @@
             </div>
         </section>
 
+        <section id="testimonial" class="background-grey">
+            <div class="container">
+                <div class="text-center m-b-100">
+                    <h5 class="text-medium ourColor">OUR TESTIMONIALS</h5>
+                    <p class="subtitle">What They Say About Us</p>
+                </div>
+                <div class="slider-container">
+                    <div class="testimonial-slider" id="testimonialSlider">
+                        <div class="testimonial">
+                            <p>"My partner and I were on the verge of separation, but Love Sense saved our relationship.
+                                The couples counseling sessions were eye-opening, and our therapist helped us rebuild
+                                trust. If you're struggling in your relationship, this is the place to go!"</p>
+                            <h4>— David & Ama, Ghana</h4>
+                        </div>
+                        <div class="testimonial">
+                            <p>"I was struggling with severe anxiety, and finding a therapist in Accra felt impossible.
+                                Love Sense changed everything! My therapist truly understands me, and I can have a
+                                session anytime I need support. I feel like I have control over my life again"</p>
+                            <h4>- Stephen., Ghana</h4>
+                        </div>
+                        <div class="testimonial">
+                            <p>"Affordable therapy that actually works! I used to think therapy was too expensive until
+                                I found Love Sense. The platform is so easy to use, and my therapist is always there
+                                when I need them. If you’ve been thinking about starting therapy, don’t wait—this is
+                                your sign!"</p>
+                            <h4>- Emmanuel O., Nigeria</h4>
+                        </div>
+                        <div class="testimonial">
+                            <p>"Losing my father was the hardest thing I’ve ever faced. Love Sense connected me with a
+                                grief counselor who guided me through the pain. Therapy was the best decision I ever
+                                made, and I recommend it to anyone dealing with loss."</p>
+                            <h4>- Mwangi L., UK</h4>
+                        </div>
+                        <div class="testimonial">
+                            <p>"As a teenager, I felt alone and overwhelmed with school and family pressure. Love Sense
+                                matched me with a therapist who truly listened and helped me navigate my emotions. I now
+                                feel more confident and in control of my mental health"</p>
+                            <h4>- Zainab T., USA</h4>
+                        </div>
+                    </div>
+
+                    <div class="slider-controls">
+                        <button onclick="prev()">‹</button>
+                        <button onclick="next()">›</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        
         <section id="blogSection">
-            <h2 class="text-medium ourColor">Latest Blogs</h2>
+            <h2 class="text-medium ourColor">LATEST BLOGS</h2>
             <div id="blogContainer" class="blog-grid"></div>
 
             <!-- Pagination -->
@@ -1062,6 +1111,61 @@
 
         // Load blogs when the page loads
         document.addEventListener("DOMContentLoaded", () => fetchBlogs(currentPage));
+
+        const slider = document.getElementById('testimonialSlider');
+        const slides = slider.children;
+        let index = 1;
+        let isTransitioning = false;
+
+        // Clone first and last
+        const firstClone = slides[0].cloneNode(true);
+        const lastClone = slides[slides.length - 1].cloneNode(true);
+
+        firstClone.id = "first-clone";
+        lastClone.id = "last-clone";
+
+        slider.appendChild(firstClone);
+        slider.insertBefore(lastClone, slider.firstChild);
+
+        const slideCount = slider.children.length;
+        slider.style.transform = `translateX(-${100 * index}%)`;
+
+        function next() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            index++;
+            slider.style.transition = "transform 0.4s ease-in-out";
+            slider.style.transform = `translateX(-${100 * index}%)`;
+
+            slider.addEventListener("transitionend", () => {
+                if (slider.children[index].id === "first-clone") {
+                    slider.style.transition = "none";
+                    index = 1;
+                    slider.style.transform = `translateX(-${100 * index}%)`;
+                }
+                isTransitioning = false;
+            }, { once: true });
+        }
+
+        function prev() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            index--;
+            slider.style.transition = "transform 0.4s ease-in-out";
+            slider.style.transform = `translateX(-${100 * index}%)`;
+
+            slider.addEventListener("transitionend", () => {
+                if (slider.children[index].id === "last-clone") {
+                    slider.style.transition = "none";
+                    index = slideCount - 2;
+                    slider.style.transform = `translateX(-${100 * index}%)`;
+                }
+                isTransitioning = false;
+            }, { once: true });
+        }
+
+        // Auto-loop
+        setInterval(() => next(), 5000);
 
     </script>
 
