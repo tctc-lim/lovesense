@@ -436,9 +436,9 @@ label {
   display: block;
 }
 
-#blogForm input,
-#blogForm textarea,
-#blogForm select {
+#blogForm input, #edit-blog-form input,
+#blogForm textarea, #edit-blog-form textarea,
+#blogForm select, #edit-blog-form select {
   padding: 8px;
   margin: 5px 0 10px;
   border: 1px solid #ccc;
