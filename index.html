@@ -410,9 +410,9 @@
                         <div class="form-group m-b-5">
                             <label>Number of Session(s)</label>
                             <select id="sessions">
-                                <option value="150" selected>1 Session - GHS 150</option>
-                                <option value="400">3 Sessions - GHS 400</option>
-                                <option value="650">5 Sessions - GHS 650</option>
+                                <option value="150" selected>1 Session</option>
+                                <option value="400">3 Sessions</option>
+                                <option value="650">5 Sessions</option>
                             </select>
                         </div>
                         <div class="form-group m-b-5">
@@ -736,8 +736,8 @@
 
     <script src="general.js"></script>
     <script type="text/javascript">
-        let convAmount
-        let convCurrency
+        let convAmount;
+        let convCurrency;
         const promos = [
             { code: 'Dr Poe', percentage: 10 },
             { code: 'Poemack', percentage: 12 },
@@ -759,7 +759,6 @@
         let price = 150;
 
         $(document).ready(function () {
-
             $('#promo_code').on('keyup', () => {
                 upDatePrice();
             });
@@ -825,12 +824,8 @@
             let promo = promos.find((itm) => itm.code.toLowerCase() === promoCode.toLowerCase());
 
             try {
-                const openEx = '6c1b07a00deb496391f7756a57e8dc36';
                 const ipData = '0b7d9046894cb960e5ed3d429b1de35bde53af7af9e410f94850913c';
-                const [location, exchange] = await Promise.all([
-                    fetchJson(`https://api.ipdata.co?api-key=${ipData}&fields=currency`),
-                    fetchJson(`https://openexchangerates.org/api/latest.json?app_id=${openEx}`)
-                ]);
+                const location = await fetchJson(`https://api.ipdata.co?api-key=${ipData}&fields=currency`);
 
                 if (location && location.currency) {
                     let finalPrice;
@@ -843,14 +838,15 @@
                     } else if (targetCurrencyCode === 'USD') {
                         const usdPrices = { '150': 20, '400': 58, '650': 96 };
                         finalPrice = usdPrices[selectedSessions];
-                    } else if (targetCurrencyCode === 'EUR') {
-                        const eurPrices = { '150': 15, '400': 43, '650': 72 };
-                        finalPrice = eurPrices[selectedSessions];
-                        targetSymbol = '€';
+                    } else if (targetCurrencyCode === 'GBP') {
+                        const gbpPrices = { '150': 15, '400': 43, '650': 72 };
+                        finalPrice = gbpPrices[selectedSessions];
+                        targetSymbol = '£';
                     } else {
-                        fx.base = exchange.base;
-                        fx.rates = exchange.rates;
-                        finalPrice = fx(price).from('GHS').to(targetCurrencyCode).toFixed(2);
+                        const defPrices = { '150': 150, '400': 400, '650': 650 };
+                        finalPrice = defPrices[selectedSessions];
+                        targetCurrencyCode = 'GHS';
+                        targetSymbol = 'GHS ';
                     }
 
                     if (promo) {
@@ -862,11 +858,19 @@
                     convCurrency = targetCurrencyCode;
                     $('#book_price').val(`${targetSymbol}${convAmount}`);
                 } else {
-                    $('#book_price').val(`GHS ${price}`);
+                    const defPrices = { '150': 150, '400': 400, '650': 650 };
+                    finalPrice = defPrices[selectedSessions];
+                    convAmount = finalPrice;
+                    convCurrency = 'GHS';
+                    $('#book_price').val(`GHS ${convAmount}`);
                 }
             } catch (error) {
                 console.error('Currency conversion error:', error);
-                $('#book_price').val(`GHS ${price}`);
+                const defPrices = { '150': 150, '400': 400, '650': 650 };
+                const finalPrice = defPrices[selectedSessions];
+                convAmount = finalPrice;
+                convCurrency = 'GHS';
+                $('#book_price').val(`GHS ${convAmount}`);
             }
         }
 
@@ -941,7 +945,7 @@
                 "email": $('#book_email').val(),
                 "phone": $('#book_phone').val(),
                 "service": $('#book_service').val(),
-                "price": price,
+                "price": convAmount + " " + convCurrency,
                 "time": $('#book_time').val(),
                 "message": 'null',
                 "address": "address",
