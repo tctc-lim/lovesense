@@ -39,6 +39,7 @@ if (!$user || !password_verify($password, $user["password"])) {
     exit();
 }
 
+
 // ✅ Generate JWT Token
 $payload = [
     "id" => $user["id"],

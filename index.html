@@ -409,9 +409,8 @@
                         </div>
                         <div class="form-group m-b-5">
                             <label>Number of Session(s)</label>
-                            <select aria-required="true" name="sessions" class="form-control form-control-sm required_b"
-                                id="sessions">
-                                <option value="150">1 Session</option>
+                            <select id="sessions">
+                                <option value="150" selected>1 Session</option>
                                 <option value="400">3 Sessions</option>
                                 <option value="650">5 Sessions</option>
                             </select>
@@ -442,8 +441,11 @@
                         <button class="btn btn-block" type="submit" id="book_appointment"><i
                                 class="fa fa-paper-plane"></i>&nbsp;BOOK
                             NOW</button>
-                        <a class="btn btn-block" href="https://selar.com/b37894" target="_blank" id="make_payment"><i
-                                class="fa fa-money-check-alt" style="display:none;"></i>&nbsp;Make
+                        <!--<a class="btn btn-block" href="https://selar.com/b37894" target="_blank" id="make_payment"><i-->
+                        <!--        class="fa fa-money-check-alt" style="display:none;"></i>&nbsp;Make-->
+                        <!--    Payment</a>-->
+                        <a onclick="alert('Kindly contact us for payment details as our payment provider is temporarily down')"
+                            class="btn btn-block"><i class="fa fa-money-check-alt" style="display:none;"></i>&nbsp;Make
                             Payment</a>
 
                         <button class="btn btn-primary" type="button" disabled="" id="spinMe2" style="display: none;">
@@ -474,7 +476,7 @@
                         <h3>How To Make Your Marriage Work</h3>
                         <p>This powerful, comforting book by Love Sense is for couples who feel disconnected,
                             overwhelmed, or stuck in the same fights—but still believe love is worth fighting for.</p>
-                        <a href="https://selar.com/q20725" target="_blank"><button>Get Now</button></a>
+                        <!--<a href="https://selar.com/q20725" target="_blank"><button>Get Now</button></a>-->
                     </div>
 
                     <!-- Book Item 2 -->
@@ -482,7 +484,7 @@
                         <img src="images/lovesense-book2.jfif" alt="How To Heal From Heartbreak and Be Whole Again">
                         <h3>How To Heal From Heartbreak and Be Whole Again</h3>
                         <p>A gentle guide for when you're hurting, stuck, and unsure how to let go.</p>
-                        <a href="https://selar.com/x141c7" target="_blank"><button>Get Now</button></a>
+                        <!--<a href="https://selar.com/x141c7" target="_blank"><button>Get Now</button></a>-->
                     </div>
                 </div>
             </div>
@@ -491,7 +493,7 @@
         <section id="testimonial" class="background-grey">
             <div class="container">
                 <div class="text-center m-b-100">
-                    <h5 class="text-medium ourColor">OUR TESTIMONIALS</h5>
+                    <h5 class="text-medium ourColor">Our Testimonials</h5>
                     <p class="subtitle">What They Say About Us</p>
                 </div>
                 <div class="slider-container">
@@ -537,9 +539,9 @@
 
             </div>
         </section>
-        
+
         <section id="blogSection">
-            <h2 class="text-medium ourColor">LATEST BLOGS</h2>
+            <h2 class="text-medium ourColor">Latest Blogs</h2>
             <div id="blogContainer" class="blog-grid"></div>
 
             <!-- Pagination -->
@@ -553,9 +555,9 @@
         <section id="contactUs" class="background-grey">
             <div class="container">
                 <div class="text-center m-b-100">
-                    <h5 class="text-medium ourColor">GET IN TOUCH</h5>
+                    <h5 class="text-medium ourColor">Get In Touch</h5>
                     <!-- <p>Lorem ipsum dolor sit amet, consecte adipiscing elit. Suspendisse condimentum porttitor cursumus. -->
-                    <!--</p>--> 
+                    <!--</p>-->
                 </div>
                 <!-- <div class="row"> -->
                 <div class="col-lg-8  center">
@@ -636,7 +638,10 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-b" data-dismiss="modal">Close</button>
-                        <a href="https://selar.com/b37894" target="_blank" id="make_payment2" class="btn btn-b">Proceed
+                        <!--<a href="https://selar.com/b37894" target="_blank" id="make_payment2" class="btn btn-b">Proceed-->
+                        <!--    to Payment</a>-->
+                        <a onclick="alert('Kindly contact us for payment details as our payment provider is temporarily down')"
+                            class="btn btn-b">Proceed
                             to Payment</a>
                     </div>
                 </div>
@@ -690,7 +695,8 @@
                         </div>
                     </div>
                 </div>
-                <p class="note"><b>PLEASE NOTE:</b> We are NOT a medical or psychiatric clinic and do NOT provide clinical services.</p>
+                <p class="note"><b>PLEASE NOTE:</b> We are NOT a medical or psychiatric clinic and do NOT provide
+                    clinical services.</p>
             </div>
         </div>
         <div class="copyright-content">
@@ -730,8 +736,8 @@
 
     <script src="general.js"></script>
     <script type="text/javascript">
-        let convAmount
-        let convCurrency
+        let convAmount;
+        let convCurrency;
         const promos = [
             { code: 'Dr Poe', percentage: 10 },
             { code: 'Poemack', percentage: 12 },
@@ -739,36 +745,30 @@
             { code: 'ManuelAsare', percentage: 10 },
             { code: 'Success', percentage: 10 },
             { code: 'Theayomidesamuel', percentage: 10 },
-        ]
-        let basePrice = 150; // Initial price for 1 session
-        let price = basePrice;
+        ];
+        const sessionPrices = {
+            '1': 150,
+            '3': 400,
+            '5': 650
+        };
+        const sessionText = {
+            '150': '1 Session',
+            '400': '3 Sessions',
+            '650': '5 Sessions'
+        };
+        let price = 150;
 
         $(document).ready(function () {
-
-
-
-
-
             $('#promo_code').on('keyup', () => {
-                let promoCode = $('#promo_code').val()
+                upDatePrice();
+            });
+            $("#sessions").on("change", function () {
                 if (!navigator.onLine) {
                     alert('You are currently offline, You need internet connection to book a service');
-                    return
+                    return;
                 }
-                if (promoCode !== '') {
-                    let arrt = promos.filter((itm) => {
-                        return itm.code === promoCode
-                    })
-                    if (arrt.length > 0) {
-                        let percent = parseFloat(arrt[0].percentage) / 100
-                        price = price - (price * percent)
-                    }
-
-                } else {
-                    price = basePrice;
-                    upDatePrice()
-                }
-            })
+                upDatePrice();
+            });
 
             $('#make_payment').hide()
             localStorage.removeItem("name")
@@ -788,62 +788,91 @@
                 if (isEmptyInput('.required_b')) {
                     bookAppointment();
                 }
-
             });
+
             $("#promo_btn").on("click", function () {
                 if (!navigator.onLine) {
                     alert('You are currently offline, You need internet connection to book a service');
                     return
                 }
                 upDatePrice();
-
-            });
-            $("#sessions").on("change", function () {
-                // let noOfSessions = $('#sessions').val();
-                if (!navigator.onLine) {
-                    alert('You are currently offline, You need internet connection to book a service');
-                    return
-                }
-                price = parseInt($('#sessions').val());
-                upDatePrice();
             });
 
             let dtToday = new Date();
-
             let month = dtToday.getMonth() + 1;
             let day = dtToday.getDate();
             let year = dtToday.getFullYear();
             if (month < 10) month = '0' + month.toString();
             if (day < 10) day = '0' + day.toString();
-
             let maxDate = year + '-' + month + '-' + day;
             $('#book_date').attr('min', maxDate);
 
-
-        })
-
+            upDatePrice();
+        });
 
         async function fetchJson(url) {
             let res = await fetch(url);
+            if (!res.ok) throw new Error('Network response was not ok.');
             return await res.json();
         }
 
-        (async function () {
-            // all of our JavaScript code here
-            const openEx = '6c1b07a00deb496391f7756a57e8dc36'
-            const ipData = '0b7d9046894cb960e5ed3d429b1de35bde53af7af9e410f94850913c'
-            let location = await fetchJson(`https://api.ipdata.co?api-key=${ipData}&fields=currency`);
-            let exchange = await fetchJson(`https://openexchangerates.org/api/latest.json?app_id=${openEx}`);
+        async function upDatePrice() {
+            let selectedSessions = $('#sessions').val();
+            let promoCode = $('#promo_code').val();
+            price = parseInt(selectedSessions);
 
-            fx.base = exchange.base;
-            fx.rates = exchange.rates;
-            console.log(fx(price).from('GHS').to(location.currency.code).toFixed(2));
-            convAmount = fx(price).from('GHS').to(location.currency.code).toFixed(2)
-            convCurrency = location.currency.code
-            console.log(location.currency.code)
-            $('#book_price').val(`${location.currency.symbol}${fx(price).from('GHS').to(location.currency.code).toFixed(2)}`)
-            // console.log(location, exchange)
-        })();
+            let promo = promos.find((itm) => itm.code.toLowerCase() === promoCode.toLowerCase());
+
+            try {
+                const ipData = '0b7d9046894cb960e5ed3d429b1de35bde53af7af9e410f94850913c';
+                const location = await fetchJson(`https://api.ipdata.co?api-key=${ipData}&fields=currency`);
+
+                if (location && location.currency) {
+                    let finalPrice;
+                    let targetCurrencyCode = location.currency.code;
+                    let targetSymbol = location.currency.symbol;
+
+                    if (targetCurrencyCode === 'NGN') {
+                        const ngnPrices = { '150': 20000, '400': 58000, '650': 95000 };
+                        finalPrice = ngnPrices[selectedSessions];
+                    } else if (targetCurrencyCode === 'USD') {
+                        const usdPrices = { '150': 20, '400': 58, '650': 96 };
+                        finalPrice = usdPrices[selectedSessions];
+                    } else if (targetCurrencyCode === 'GBP') {
+                        const gbpPrices = { '150': 15, '400': 43, '650': 72 };
+                        finalPrice = gbpPrices[selectedSessions];
+                        targetSymbol = '£';
+                    } else {
+                        const defPrices = { '150': 150, '400': 400, '650': 650 };
+                        finalPrice = defPrices[selectedSessions];
+                        targetCurrencyCode = 'GHS';
+                        targetSymbol = 'GHS ';
+                    }
+
+                    if (promo) {
+                        let percent = parseFloat(promo.percentage) / 100;
+                        finalPrice = finalPrice * (1 - percent);
+                    }
+
+                    convAmount = finalPrice;
+                    convCurrency = targetCurrencyCode;
+                    $('#book_price').val(`${targetSymbol}${convAmount}`);
+                } else {
+                    const defPrices = { '150': 150, '400': 400, '650': 650 };
+                    finalPrice = defPrices[selectedSessions];
+                    convAmount = finalPrice;
+                    convCurrency = 'GHS';
+                    $('#book_price').val(`GHS ${convAmount}`);
+                }
+            } catch (error) {
+                console.error('Currency conversion error:', error);
+                const defPrices = { '150': 150, '400': 400, '650': 650 };
+                const finalPrice = defPrices[selectedSessions];
+                convAmount = finalPrice;
+                convCurrency = 'GHS';
+                $('#book_price').val(`GHS ${convAmount}`);
+            }
+        }
 
         function isEmptyInput(first) {
             let isEmpty = false;
@@ -851,87 +880,26 @@
                 var input = $.trim($(this).val());
                 if (input.length === 0 || input === "0") {
                     $(this).addClass('has-error');
-                    // $('.ttMessage').show();
                     isEmpty = true;
-
                 } else {
                     $(this).removeClass("has-error");
-                    // $('.ttMessage').hide();
-                    // isEmpty = false;
                 }
-
             });
-            if (isEmpty === true) { return false; }
-            else { return true }
-
-        }
-
-        function upDatePrice() {
-            // Get the selected number of sessions
-            let selectedSessions = $('#sessions').val();
-
-            // Reset price to the selected session price before conversion
-            price = parseInt(selectedSessions);
-
-            // Check for promo code
-            let promoCode = $('#promo_code').val();
-            if (promoCode !== '') {
-                let arrt = promos.filter((itm) => {
-                    return itm.code === promoCode
-                });
-                if (arrt.length > 0) {
-                    let percent = parseFloat(arrt[0].percentage) / 100;
-                    price = price - (price * percent);
-                }
-            }
-
-            async function fetchJsons(url) {
-                let res = await fetch(url);
-                return await res.json();
-            }
-
-            (async function () {
-                const openEx = '6c1b07a00deb496391f7756a57e8dc36';
-                const ipData = '0b7d9046894cb960e5ed3d429b1de35bde53af7af9e410f94850913c';
-
-                try {
-                    let location = await fetchJsons(`https://api.ipdata.co?api-key=${ipData}&fields=currency`);
-                    let exchange = await fetchJsons(`https://openexchangerates.org/api/latest.json?app_id=${openEx}`);
-
-                    fx.base = exchange.base;
-                    fx.rates = exchange.rates;
-
-                    convAmount = fx(price).from('GHS').to(location.currency.code).toFixed(2);
-                    convCurrency = location.currency.code;
-
-                    $('#book_price').val(`${location.currency.symbol}${convAmount}`);
-                } catch (error) {
-                    console.error('Currency conversion error:', error);
-                    // Fallback to showing the price in GHS
-                    $('#book_price').val(`GHS ${price}`);
-                }
-            })();
+            return !isEmpty;
         }
 
         function contactMe() {
-
-            //declaring variable using the ES6 let
             let name = $('#user_name').val();
             let email = $('#user_email').val();
             let phone = $('#user_phone').val();
-            // let subject = $('#user_subject').val();
             let message = $('#user_message').val();
 
             $("#process_contact").hide()
             $("#spinMe").show();
-
-            const URL = "https://love-sense.herokuapp.com/api/v1/contact";
-
-            let data = {
+            const data = {
                 "name": name,
                 "email": email,
                 "phone_number": phone,
-                // "subject": subject,
                 "message": message
             }
 
@@ -942,20 +910,18 @@
                 url: "contact.php",
                 headers: {
                     'Accept': 'application/json',
-                    // 'Content-Type': 'application/json',
                 },
                 data: data,
-                success: function (response, textStatus, jqXHR) {
+                success: function (response) {
                     $("#spinMe").hide();
                     $("#process_contact").show()
                     $('#sucModal').addClass('show');
-
                     $("#user_name").val('');
                     $("#user_email").val('');
                     $("#user_phone").val('');
                     $("#user_message").val('');
                 },
-                error: function (jqXHR, textStatus, errorThrown) {
+                error: function () {
                     $("#spinMe").hide();
                     $("#process_contact").show()
                     $('#danModal').addClass('show');
@@ -963,28 +929,15 @@
             })
         }
 
-
         function bookAppointment() {
             if (!navigator.onLine) {
                 alert('You are currently offline, You need internet connection to book a service');
-                return
+                return;
             }
 
-            // Fix sessions mapping
             let sessions = $('#sessions').val();
-            let sessionsText;
+            let sessionsText = sessionText[sessions] || '0 Session';
 
-            if (sessions === '150') {
-                sessionsText = '1 Session'
-            } else if (sessions === '400') {
-                sessionsText = '3 Sessions'
-            } else if (sessions === '650') {
-                sessionsText = '5 Sessions'
-            } else {
-                sessionsText = '0 Session';
-            }
-
-            // Gather form data
             let data = {
                 "first_name": $('#book_name').val(),
                 "last_name": $('#book_lname').val(),
@@ -992,15 +945,14 @@
                 "email": $('#book_email').val(),
                 "phone": $('#book_phone').val(),
                 "service": $('#book_service').val(),
-                "price": price,
+                "price": convAmount + " " + convCurrency,
                 "time": $('#book_time').val(),
                 "message": 'null',
                 "address": "address",
                 "promoCode": $('#promo_code').val(),
                 "sessions": sessionsText,
-            }
+            };
 
-            // Store data in localStorage
             localStorage.setItem("name", data.first_name);
             localStorage.setItem("last_name", data.last_name);
             localStorage.setItem("email", data.email);
@@ -1008,11 +960,9 @@
             localStorage.setItem("price", data.price);
             localStorage.setItem("phones", data.phone);
 
-            // Update UI state
             $("#book_appointment").hide();
             $("#spinMe2").show();
 
-            // Submit form
             $.ajax({
                 type: "POST",
                 dataType: 'json',
@@ -1028,10 +978,9 @@
                     $("#book_appointment").show();
                     $('#make_payment').show();
                 },
-                error: function (jqXHR, textStatus, errorThrown) {
+                error: function (jqXHR) {
                     $("#spinMe2").hide();
                     $("#book_appointment").show();
-
                     let errorMessage = 'An error occurred while processing your booking';
                     try {
                         const response = JSON.parse(jqXHR.responseText);
@@ -1041,7 +990,6 @@
                     } catch (e) {
                         console.log('Error parsing response:', e);
                     }
-
                     $('#danModal2').text(errorMessage).addClass('show');
                 }
             });
@@ -1049,14 +997,12 @@
 
         const BASE_URL = "https://mylovesense.online";
         let currentPage = 1;
-        const limit = 6; // Number of blogs per page
+        const limit = 6;
 
-        // Fetch blogs from the backend
         async function fetchBlogs(page = 1) {
             try {
                 const response = await fetch(`${BASE_URL}/home_blogs.php?page=${page}&limit=${limit}`);
                 const data = await response.json();
-
                 if (data.success) {
                     displayBlogs(data.blogs);
                     updatePagination(data.currentPage, data.totalPages);
@@ -1068,29 +1014,24 @@
             }
         }
 
-        // Display blogs in cards
         function displayBlogs(blogs) {
             const blogContainer = document.getElementById("blogContainer");
             blogContainer.innerHTML = "";
-
             blogs.forEach(blog => {
                 const blogCard = document.createElement("div");
                 blogCard.classList.add("blog-card");
-
                 blogCard.innerHTML = `
-            <img src="../backend/blogs/${blog.image1}" alt="${blog.title}">
-            <div class="blog-content">
-                <h3>${blog.title}</h3>
-                <p>${blog.content1.substring(0, 100)}...</p>
-                <a href="blog-details.html?id=${blog.id}" class="read-more">Read More</a>
-            </div>
-        `;
-
+                <img src="../backend/blogs/${blog.image1}" alt="${blog.title}">
+                <div class="blog-content">
+                    <h3>${blog.title}</h3>
+                    <p>${blog.content1.substring(0, 100)}...</p>
+                    <a href="blog-details.html?id=${blog.id}" class="read-more">Read More</a>
+                </div>
+            `;
                 blogContainer.appendChild(blogCard);
             });
         }
 
-        // Update pagination controls
         function updatePagination(current, total) {
             if (total === 0) {
                 document.getElementById("currentPage").textContent = `Page 0 of ${total}`;
@@ -1100,33 +1041,25 @@
                 document.getElementById("nextPage").disabled = current === total;
             }
             document.getElementById("prevPage").disabled = current === 1;
-
         }
 
-        // Handle pagination button clicks
         function changePage(step) {
             currentPage += step;
             fetchBlogs(currentPage);
         }
 
-        // Load blogs when the page loads
         document.addEventListener("DOMContentLoaded", () => fetchBlogs(currentPage));
 
         const slider = document.getElementById('testimonialSlider');
         const slides = slider.children;
         let index = 1;
         let isTransitioning = false;
-
-        // Clone first and last
         const firstClone = slides[0].cloneNode(true);
         const lastClone = slides[slides.length - 1].cloneNode(true);
-
         firstClone.id = "first-clone";
         lastClone.id = "last-clone";
-
         slider.appendChild(firstClone);
         slider.insertBefore(lastClone, slider.firstChild);
-
         const slideCount = slider.children.length;
         slider.style.transform = `translateX(-${100 * index}%)`;
 
@@ -1136,7 +1069,6 @@
             index++;
             slider.style.transition = "transform 0.4s ease-in-out";
             slider.style.transform = `translateX(-${100 * index}%)`;
-
             slider.addEventListener("transitionend", () => {
                 if (slider.children[index].id === "first-clone") {
                     slider.style.transition = "none";
@@ -1153,7 +1085,6 @@
             index--;
             slider.style.transition = "transform 0.4s ease-in-out";
             slider.style.transform = `translateX(-${100 * index}%)`;
-
             slider.addEventListener("transitionend", () => {
                 if (slider.children[index].id === "last-clone") {
                     slider.style.transition = "none";
@@ -1164,11 +1095,8 @@
             }, { once: true });
         }
 
-        // Auto-loop
         setInterval(() => next(), 5000);
-
     </script>
-
 
 </body>
 

@@ -19,6 +19,7 @@
     .user-bar {
         display: flex;
         flex-wrap: wrap;
+        gap: 0px;
     }
 
     .nav .nav-links p {
