@@ -16,8 +16,18 @@
             scroll-behavior: smooth;
         }
 
+        @font-face {
+            font-family: "Belluccia Contextual";
+            src: url("https://db.onlinewebfonts.com/t/a0e5c55ac38653dffd7eaba61deb12f6.eot");
+            src: url("https://db.onlinewebfonts.com/t/a0e5c55ac38653dffd7eaba61deb12f6.eot?#iefix")format("embedded-opentype"),
+                url("https://db.onlinewebfonts.com/t/a0e5c55ac38653dffd7eaba61deb12f6.woff2")format("woff2"),
+                url("https://db.onlinewebfonts.com/t/a0e5c55ac38653dffd7eaba61deb12f6.woff")format("woff"),
+                url("https://db.onlinewebfonts.com/t/a0e5c55ac38653dffd7eaba61deb12f6.ttf")format("truetype"),
+                url("https://db.onlinewebfonts.com/t/a0e5c55ac38653dffd7eaba61deb12f6.svg#Belluccia Contextual")format("svg");
+        }
+
         .bg-home {
-            background: url('resources/images/bg-home.jpeg');
+            background: url('resources/images/bg-home-03.png');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center bottom;
@@ -167,8 +177,7 @@
         <nav class="container px-6 mx-auto">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-2">
-                    <i class="fa-solid fa-heart-pulse text-red-400 text-3xl"></i>
-                    <span class="text-2xl font-bold">Match</span>
+                    <img src="images/logos/logo2.png" alt="Love Sense Logo" class="w-32">
                 </div>
 
                 <!-- Desktop Navigation -->
@@ -230,16 +239,11 @@
         </nav>
     </header>
     <main>
-        <section class="bg-home pt-[6%] h-[90vh] md:h-[800px] relative">
+        <section class="bg-home h-[90vh] md:h-[750px] relative flex justify-center items-center md:block">
             <div class="absolute top-0 bottom-0 left-0 right-0 bg-white/10"></div>
-            <div class="text-center text-white px-6 relative z-10">
-                <h1 class="text-4xl md:text-7xl font-bold mb-4 text-[#e3474e] max-w-[800px] mx-auto heading">Love
-                    Festival 2025
-                    Celebrate, Connect, and Fall in Love Again!</h1>
-                <p class="text-lg mb-8 text-[#e3474e] font-semibold max-w-[560px] mx-auto mt-7">A virtual event for
-                    married couples, people in relationships, and singles seeking love, designed to spark connection,
-                    joy, and romance.</p>
-                <a href="https://forms.gle/d33GRG3gEhtQi2rb6" target="_blank">
+            <div class="text-center text-white flex flex-col justify-center px-6 relative z-10">
+                <img src="resources/images/text-home.png" alt="" class="mx-auto w-[400px] md:w-[500px] lg:w-[600px]">
+                <a href="https://forms.gle/d33GRG3gEhtQi2rb6" class="md:mt-[-40px]" target="_blank">
                     <button
                         class="cta-btn border-[#e14650] border-2 border-solid px-6 py-3 rounded-full text-md bg-white font-semibold text-[#e3474e] transition-all">REGISTER
                         NOW</button>
@@ -249,13 +253,9 @@
 
         <section class="py-16 md:py-24" id="about">
             <div class="container mx-auto px-6">
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-[#e3474e] heading text-center">What is Love
-                    Festival?</h2>
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-[#e3474e] heading text-center">About Love Festival</h2>
                 <p class="md:text-[21px] text-lg text-gray-800 max-w-5xl mx-auto mt-6 text-center leading-[35px]">Love
-                    Festival is
-                    a fun, interactive online experience for anyone who wants to celebrate love, deepen connections, or
-                    find their perfect partner. Whether you’re married, dating, or single, this event offers engaging
-                    activities, expert tips, and exciting opportunities to meet like-minded people.</p>
+                    Festival is a fun, interactive online experience for anyone who wants to celebrate love, deepen connections, or find their perfect partner. Whether you’re married, dating, or single, this event offers engaging activities, expert tips, and exciting opportunities to meet like-minded people.</p>
 
                 <!-- Grid Layout -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 items-center">
@@ -320,7 +320,7 @@
             <div class="container mx-auto px-6">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-[#e3474e] heading text-center">Event
-                        Highlights / Features</h2>
+                        Highlights</h2>
                     <h3 class="md:text-[21px] text-lg text-gray-700 max-w-5xl mx-auto mt-3 text-center leading-[35px]">
                         What to
                         Expect at Love Festival</h3>
@@ -404,36 +404,6 @@
             </div>
         </section>
 
-        <section class="py-16 md:py-24 bg-white">
-            <div class="container mx-auto px-6 flex flex-col lg:flex-row items-center lg:items-start lg:space-x-12"
-                style="align-items: center;">
-                <div class="lg:w-1/2 flex justify-center lg:justify-end mb-8 lg:mb-0 max-h-[400px]">
-                    <img src="resources/images/lovesense-book1.jfif" alt="Love Sense Image"
-                        class="rounded-lg shadow-lg object-cover">
-                </div>
-
-                <div class="lg:w-1/2 text-center lg:text-left">
-                    <div class=" mb-4">
-                        <div class="flex justify-center lg:justify-start">
-                            <img src="resources/images/lovesense-logo.png" alt="Love Sense Logo"
-                                class="w-[160px] mb-3 ">
-                        </div>
-                        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-[#e3474e] heading">
-                            Organized by <span class="text-pink-600">Love Sense</span>
-                        </h2>
-                    </div>
-                    <p class="text-lg md:text-xl text-gray-700 leading-relaxed">
-                        Love Sense is a counseling and therapy consulting firm dedicated to helping people build
-                        meaningful,
-                        lasting relationships. With years of experience guiding couples and singles, we create
-                        experiences that
-                        inspire love, joy, and personal growth.
-                    </p>
-                </div>
-            </div>
-
-        </section>
-
         <section class="py-16 md:py-24 bg-[#fff6f9]" id="contact">
             <div class="container px-6 mx-auto flex flex-col lg:flex-row items-center lg:items-start lg:space-x-12"
                 style="align-items: center;">
@@ -513,8 +483,7 @@
     <footer class="bg-[#e14650] text-white py-8">
         <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
             <div class="flex items-center space-x-2 mb-4 md:mb-0">
-                <i class="fa-solid fa-heart-pulse text-white text-3xl"></i>
-                <span class="text-2xl font-bold">Match</span>
+                <img src="images/logos/logo1.png" alt="Love Sense Logo" class="w-32">
             </div>
 
             <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-8 text-sm">
