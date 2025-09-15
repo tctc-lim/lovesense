@@ -444,9 +444,9 @@
                         <!--<a class="btn btn-block" href="https://selar.com/b37894" target="_blank" id="make_payment"><i-->
                         <!--        class="fa fa-money-check-alt" style="display:none;"></i>&nbsp;Make-->
                         <!--    Payment</a>-->
-                        <a onclick="alert('Kindly contact us for payment details as our payment provider is temporarily down')"
+                        <!-- <a onclick="alert('Kindly contact us for payment details as our payment provider is temporarily down')"
                             class="btn btn-block"><i class="fa fa-money-check-alt" style="display:none;"></i>&nbsp;Make
-                            Payment</a>
+                            Payment</a> -->
 
                         <button class="btn btn-primary" type="button" disabled="" id="spinMe2" style="display: none;">
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -874,6 +874,21 @@
             }
         }
 
+        function getPaymentLink() {
+            const selectedSessions = $('#sessions').val();
+            if (convCurrency === 'GHS') {
+                if (selectedSessions === '150') {
+                    return 'https://paystack.shop/pay/yv3gbcidwa';
+                } else if (selectedSessions === '400') {
+                    return 'https://paystack.shop/pay/owjqoe0y-w';
+                } else if (selectedSessions === '650') {
+                    return 'https://paystack.shop/pay/brkpik7dkt';
+                }
+            }
+
+            return 'https://selar.com/b37894';
+        }
+
         function isEmptyInput(first) {
             let isEmpty = false;
             $(first).each(function () {
@@ -976,7 +991,12 @@
                     $('#thanksModal').modal('show');
                     $("#spinMe2").hide();
                     $("#book_appointment").show();
-                    $('#make_payment').show();
+
+                    const paymentLink = getPaymentLink();
+                    $('#make_payment')
+                        .attr('href', paymentLink)
+                        .show();
+                    $('#make_payment i').show();
                 },
                 error: function (jqXHR) {
                     $("#spinMe2").hide();
@@ -994,6 +1014,12 @@
                 }
             });
         }
+
+        $(document).ready(function () {
+            upDatePrice();
+            $('#sessions, #promo_code').on('change', upDatePrice);
+            $('#promo_btn').on('click', upDatePrice);
+        });
 
         const BASE_URL = "https://mylovesense.online";
         let currentPage = 1;
