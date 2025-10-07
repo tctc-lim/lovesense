@@ -29,7 +29,7 @@ try {
     }
 
     // Prepare email content
-    $to = "info.mylovesense@gmail.com";
+    $to = "hq.mylovesense@gmail.com";
     $subject = "New Booking Request from {$data['first_name']} {$data['last_name']}";
 
     $message = "

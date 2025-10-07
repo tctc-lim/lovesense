@@ -13539,14 +13539,16 @@ div.icon-box:before {
 .flickity-button.next:before,
 .flickity-button.previous:before {
 	font-size: 25px;
-	font-family: inspiro-icons !important;
 }
 .flickity-button.next {
 	right: 0;
 }
 .flickity-button.next:before {
 	margin-left: 4px;
-	content: "\e930";
+	content: "\f054";
+    font-family: "Font Awesome 6 Free"; 
+    font-weight: 900; 
+
 }
 .flickity-button.next.disabled {
 	opacity: 0;
@@ -13555,8 +13557,9 @@ div.icon-box:before {
 	left: 0;
 }
 .flickity-button.previous:before {
-	content: "\e92f";
-	margin-right: 2px;
+	content: "\f053";
+    font-family: "Font Awesome 6 Free"; 
+    font-weight: 900;
 }
 .flickity-button.previous.disabled {
 	opacity: 0;
