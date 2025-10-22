@@ -364,11 +364,28 @@
                             </div>
 
                         </div>
-                        <div class="form-group m-b-5">
-                            <label>Phone</label>
-                            <input type="text" aria-required="true" name="widget-contact-form-phone"
-                                class="form-control form-control-sm required_b" id="book_phone"
-                                placeholder="Your Phone Number*">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <label>Phone</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <select id="book_country_code" class="custom-select form-control-sm"
+                                            style="width: 95px; padding-right: 5px;">
+                                            <!-- Options will be populated dynamically -->
+                                        </select>
+                                    </div>
+                                    <input type="text" aria-required="true" name="widget-contact-form-phone"
+                                        class="form-control form-control-sm required_b" id="book_phone"
+                                        placeholder="Enter your phone number">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <label>Country</label>
+                                <select aria-required="true" name="widget-contact-form-country" id="book_country"
+                                    class="form-control form-control-sm required_b">
+                                    <!-- Options will be populated dynamically -->
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group m-b-5">
                             <label>Email</label>
@@ -588,11 +605,25 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-md-6">
-                                <label for="subject">Phone</label>
-                                <input type="text" name="widget-contact-form-phone" id="user_phone"
-                                    class="form-control required_f" placeholder="Enter your phone number">
+                                <label for="country">Country</label>
+                                <select name="widget-contact-form-country" id="user_country"
+                                    class="form-control required_f">
+                                    <!-- Options will be populated dynamically -->
+                                </select>
                             </div>
-
+                            <div class="form-group col-md-6">
+                                <label for="subject">Phone</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <select id="country_code" class="custom-select"
+                                            style="width: 100px; padding-right: 5px;">
+                                            <!-- Options will be populated dynamically -->
+                                        </select>
+                                    </div>
+                                    <input type="text" name="widget-contact-form-phone" id="user_phone"
+                                        class="form-control required_f" placeholder="Enter your phone number">
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="message">Message</label>
@@ -744,29 +775,14 @@
     <footer id="footer">
         <div class="footer-content">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="icon-box effect small clean">
-                            <div class="icon">
-                                <a href="#"><i class="fas fa-clock"></i></a>
-                            </div>
-                            <h3>Working Days</h3>
-                            <p><strong>Monday - Friday</strong>
-                                <br>24hrs
-                            </p>
-                            <p><strong>Saturday - Sunday</strong>
-                                <br>24hrs
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
+                <div class="row" style="justify-content: space-between;">
+                    <div class="">
                         <div class="icon-box effect small clean">
                             <div class="icon">
                                 <a href="#"><i class="fas fa-map-marker-alt"></i></a>
                             </div>
                             <h3>Location</h3>
-                            <p><strong>Ghana</strong> <br> Saint Peters Road
-                                <br> Ogbojo Legon, Accra
+                            <p><strong>Ghana</strong> <br> Saint Peters Road, Ogbojo Legon, Accra
                             </p>
                             <p><strong>Nairobi</strong><br>
                                 - Nairobi Garage, Pinetree Plaza, Kaburu Drive, Ngong Road, Nairobi, Kenya. Upper Hill /
@@ -784,17 +800,33 @@
                             </p>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="icon-box effect small clean">
-                            <div class="icon">
-                                <a href="#"><i class="fas fa-phone"></i></a>
+                    <div>
+                        <div class="">
+                            <div class="icon-box effect small clean">
+                                <div class="icon">
+                                    <a href="#"><i class="fas fa-phone"></i></a>
+                                </div>
+                                <h3>Contact</h3>
+                                <p><strong>Phone:</strong>
+                                    <br> <a href="tel:+233-059-146-1808"> +233-59-146-1808 </a>
+                                    <br>
+                                    <br>
+                                </p>
                             </div>
-                            <h3>Contact</h3>
-                            <p><strong>Phone:</strong>
-                                <br> <a href="tel:+233-059-146-1808"> +233-59-146-1808 </a>
-                                <br>
-                                <br>
-                            </p>
+                        </div>
+                        <div class="">
+                            <div class="icon-box effect small clean">
+                                <div class="icon">
+                                    <a href="#"><i class="fas fa-clock"></i></a>
+                                </div>
+                                <h3>Working Days</h3>
+                                <p><strong>Monday - Friday</strong>
+                                    <br>24hrs
+                                </p>
+                                <p><strong>Saturday - Sunday</strong>
+                                    <br>24hrs
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -993,7 +1025,8 @@
             const selectedSessions = $('#sessions').val();
             const email = $('#book_email').val();
             const customerName = $('#book_name').val() + ' ' + $('#book_lname').val();
-            const customerPhone = $('#book_phone').val();
+            const countryCode = $('#book_country_code').val();
+            const customerPhone = `${countryCode} ${$('#book_phone').val()}`;
 
             if (!email) {
                 alert('Please enter your email address');
@@ -1093,13 +1126,16 @@
             let email = $('#user_email').val();
             let phone = $('#user_phone').val();
             let message = $('#user_message').val();
+            let country = $('#user_country option:selected').text();
+            let countryCode = $('#country_code').val();
 
             $("#process_contact").hide()
             $("#spinMe").show();
             const data = {
                 "name": name,
                 "email": email,
-                "phone_number": phone,
+                "phone_number": `${countryCode} ${phone}`,
+                "country": country,
                 "message": message
             }
 
@@ -1138,12 +1174,17 @@
             let sessions = $('#sessions').val();
             let sessionsText = sessionText[sessions] || '0 Session';
 
+            let country = $('#book_country option:selected').text();
+            let countryCode = $('#book_country_code').val();
+            let phone = `${countryCode} ${$('#book_phone').val()}`;
+
             let data = {
                 "first_name": $('#book_name').val(),
                 "last_name": $('#book_lname').val(),
                 "appointmentDate": $('#book_date').val(),
                 "email": $('#book_email').val(),
-                "phone": $('#book_phone').val(),
+                "phone": phone,
+                "country": country,
                 "service": $('#book_service').val(),
                 "price": convAmount + " " + convCurrency,
                 "time": $('#book_time').val(),
@@ -1307,6 +1348,67 @@
         }
 
         setInterval(() => next(), 5000);
+
+        function populateCountrySelectors(data, countryId, codeId, phoneId) {
+            const countrySelect = document.getElementById(countryId);
+            const codeSelect = document.getElementById(codeId);
+            const phoneInput = document.getElementById(phoneId);
+
+            // Add default option for country
+            const defaultCountryOption = document.createElement('option');
+            defaultCountryOption.value = '';
+            defaultCountryOption.textContent = 'Select your country';
+            defaultCountryOption.disabled = true;
+            defaultCountryOption.selected = true;
+            countrySelect.appendChild(defaultCountryOption);
+
+            data.forEach(country => {
+                // Populate country select
+                const countryOption = document.createElement('option');
+                countryOption.value = country.cca2;
+                countryOption.textContent = country.name.common;
+                countrySelect.appendChild(countryOption);
+
+                // Populate code select
+                let dialCode = country.idd.root || '';
+                if (country.idd.suffixes && country.idd.suffixes.length > 0) {
+                    dialCode += country.idd.suffixes[0];
+                }
+                if (dialCode) {  // Skip if no dial code
+                    const codeOption = document.createElement('option');
+                    const flagUrl = country.flags.png;
+                    codeOption.value = dialCode;
+                    codeOption.setAttribute('data-country', country.cca2);
+                    codeOption.innerHTML = `<img src="${flagUrl}" alt="${country.name.common} flag" style="width: 20px; height: 15px; margin-right: 5px;"> ${country.cca2} ${dialCode}`;
+                    codeSelect.appendChild(codeOption);
+                }
+            });
+
+            // Event listener for syncing country to code (but not vice versa)
+            countrySelect.addEventListener('change', function () {
+                const selectedCountry = this.value;
+                const codeOption = Array.from(codeSelect.options).find(
+                    option => option.getAttribute('data-country') === selectedCountry
+                );
+                if (codeOption) {
+                    codeSelect.value = codeOption.value;
+                    phoneInput.placeholder = `Enter your phone number (${codeOption.value})`;
+                }
+            });
+
+            // No listener for code to country as per user request
+        }
+
+        fetch('https://restcountries.com/v3.1/all?fields=name,cca2,idd,flags')
+            .then(response => response.json())
+            .then(data => {
+                // Sort countries alphabetically by common name
+                data.sort((a, b) => a.name.common.localeCompare(b.name.common));
+
+                populateCountrySelectors(data, 'user_country', 'country_code', 'user_phone');
+                populateCountrySelectors(data, 'book_country', 'book_country_code', 'book_phone');
+            })
+            .catch(error => console.error('Error fetching countries:', error));
     </script>
 
 </body>
